@@ -41,6 +41,28 @@ namespace Entity
         }
 
 
+        public void die() {
+            // do stuff related to death here
+            Unsubscribe();
+        }
+
+        //return whether the player was successfully damaged or not
+        //skeleton code, will require change in the future
+        public bool damage(float damage) {
+            if (damage < 0)
+                return false;
+
+            float next = this.health - damage;
+            if (next <= 0) {
+                die();
+            }
+
+            this.health = next;
+            return true;
+        }
+
+
+
         public void onKeyboardMoveInput(Vector2 movement)
         {
             this.inputMovement = movement;
