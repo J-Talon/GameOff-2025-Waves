@@ -1,17 +1,18 @@
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour
-{
+public class EnemySpawner : MonoBehaviour {
     public GameObject enemyPrefab;
     private float spawnTimer = 0;
     private float spawnInterval = 2;
 
     private Transform player;
+    private EnemyManager manager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
+        manager = GameObject.FindWithTag("GameController").GetComponent<EnemyManager>();
     }
 
     // Update is called once per frame
@@ -27,7 +28,9 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        Instantiate(enemyPrefab, GetRandomPosition(), transform.rotation);
+        Enemy temp = Instantiate(EntityFactory.createZombie(6f), GetRandomPosition(), transform.rotation);
+        manager.enemyList.Add(temp);
+
     }
 
     private Vector2 GetRandomPosition()
