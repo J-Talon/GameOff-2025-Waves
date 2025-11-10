@@ -53,31 +53,29 @@ namespace EventSystem {
             
             if (lastKeyboardVector != keyboardVector)
             {
-              //  EventManager.keyboardMoveActionEvent.callEvent(keyboardVector);
+                EventManager.keyboardMoveActionEvent.callEvent(keyboardVector);
                 lastKeyboardVector = keyboardVector;
             }
 
             Vector2 mouseVector = mouseMoveAction.ReadValue<Vector2>();
-           // EventManager.mouseMoveEvent.callEvent(mouseVector);
+            EventManager.mouseMoveEvent.callEvent(mouseVector);
             lastMousePosition = mouseVector;
         
             
             
-            float mouseState = mouseButtonAction.ReadValue<float>();
-            if (mouseState >= 1 && lastLeftMouseState < 1)
-                return;
-            //    EventManager.mouseButtonDownEvent.callEvent(mouseState);
-            else if (mouseState < 1 && lastLeftMouseState >= 1)
-                return;
-             //   EventManager.mouseButtonUpEvent.callEvent(mouseState);
+            // float mouseState = mouseButtonAction.ReadValue<float>();
+            // if (mouseState >= 1 && lastLeftMouseState < 1)
+            //     EventManager.leftMouseDownEvent.callEvent(mouseState);
+            // else if (mouseState < 1 && lastLeftMouseState >= 1)
+            //     EventManager.leftMouseUpEvent.callEvent(mouseState);
             
 
-            if (mouseState >= 1)
-            {
-              //  EventManager.mouseHoldDownEvent.callEvent(mouseState);
-            }
+            // if (mouseState >= 1)
+            // {
+            //   //  EventManager.mouseHoldDownEvent.callEvent(mouseState);
+            // }
 
-            lastLeftMouseState = mouseState;
+         //   lastLeftMouseState = mouseState;
             
         }
     }

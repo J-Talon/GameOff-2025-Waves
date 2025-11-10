@@ -1,0 +1,62 @@
+using EventSystem;
+using UnityEngine;
+
+namespace Entity
+{
+    public class Player : MonoBehaviour
+    {
+        private Vector2 inputMovement;
+        private Vector2 impulse;
+
+        private Rigidbody2D rigidBody;
+
+        [SerializeField] private float health = 1;
+        [SerializeField] private float maxHealth = 1;
+        [SerializeField] private float moveSpeed = 5;
+        [SerializeField] private float frictionCoeff = 0.02f; // this is for knockback calculation 
+        
+        public void Start()
+        {
+            rigidBody = GetComponent<Rigidbody2D>();
+            impulse = Vector2.zero;
+            inputMovement = Vector2.zero;
+            Subscribe();
+        }
+        
+
+        public void FixedUpdate()
+        {
+            if (impulse.sqrMagnitude < 0.01f)
+                impulse = Vector2.zero;
+
+            rigidBody.linearVelocity = (inputMovement * moveSpeed) + impulse;
+            impulse *= (1 - frictionCoeff);
+
+        }
+
+        //if you need to apply knockback to the player
+        public void push(Vector2 impulse)
+        {
+            this.impulse += impulse;
+        }
+
+
+        public void onKeyboardMoveInput(Vector2 movement)
+        {
+            this.inputMovement = movement;
+        }
+        
+        
+        public void Unsubscribe()
+        {
+            EventManager.keyboardMoveActionEvent.Unsubscribe(onKeyboardMoveInput);
+        }
+
+        public void Subscribe()
+        {
+            EventManager.keyboardMoveActionEvent.Subscribe(onKeyboardMoveInput);
+        }
+
+
+    }
+}
