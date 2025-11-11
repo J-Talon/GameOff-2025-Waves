@@ -2,11 +2,11 @@ using UnityEngine;
 
 public abstract class Entity : MonoBehaviour
 {
-    public float health;
-    public float dmg;
-    public float movementSpeed;
+    protected float health; 
+    protected float attackDmg;
+    protected float movementSpeed;
 
-    public bool invulnerable;
+    protected bool invulnerable;
 
     public abstract void Attack();
 
