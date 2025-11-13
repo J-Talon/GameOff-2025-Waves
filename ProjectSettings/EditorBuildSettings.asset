@@ -29,6 +29,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HealthSystem.unity
     guid: 0a0969c4a3c62cb4a89b3c2bebb6c1a0
+  - enabled: 1
+    path: Assets/Scenes/EnemySpawnerPrototype.unity
+    guid: 8878de1d79a562047bb42e10df763a8a
+  - enabled: 1
+    path: Assets/Scenes/EnemyPrototype.unity
+    guid: 82cb13ee71db39849a88991fd15f59ec
+  - enabled: 1
+    path: Assets/Scenes/ConstantLoad.unity
+    guid: 79aa1637e03631ec88ad30870b3ecc9f
+  - enabled: 1
+    path: Assets/Scenes/PlayerPrototype.unity
+    guid: 4079360e7b9ceefe29827afcd2ae4798
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
