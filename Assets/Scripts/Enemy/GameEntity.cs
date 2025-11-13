@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public abstract class Entity : MonoBehaviour
+public abstract class GameEntity : MonoBehaviour
 {
-    protected float health; 
-    protected float attackDmg;
+    public float health { get; protected set; }
+    public float attackDmg { get; protected set; }
     protected float movementSpeed;
 
     protected bool invulnerable;
@@ -17,6 +17,11 @@ public abstract class Entity : MonoBehaviour
             return false;
         }
         health = Mathf.Max(0, health - damage);
+
+        if (health == 0)
+        {
+            Destroy(gameObject);
+        }
         return true;
     }
 }
