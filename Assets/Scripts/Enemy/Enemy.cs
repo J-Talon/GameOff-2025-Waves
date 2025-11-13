@@ -32,7 +32,7 @@ public class Enemy : GameEntity
         {
             damage(5f);
         }
-        /*Enemy temp = collision.GetComponent<Enemy>(); // WILL CHANGE TO A PROJECTILE CLASS ONCE PROJECTILES ARE CREATED
+        /*Projectile temp = collision.GetComponent<Projectile>(); // WILL CHANGE TO A PROJECTILE CLASS ONCE PROJECTILES ARE CREATED
         if (temp)
         {
             damage(temp.attackDmg);

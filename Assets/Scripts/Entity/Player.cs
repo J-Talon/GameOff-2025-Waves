@@ -61,8 +61,6 @@ namespace Entity
             return true;
         }
 
-
-
         public void onKeyboardMoveInput(Vector2 movement)
         {
             this.inputMovement = movement;
@@ -77,6 +75,15 @@ namespace Entity
         public void Subscribe()
         {
             EventManager.keyboardMoveActionEvent.Subscribe(onKeyboardMoveInput);
+        }
+
+        public void OnTriggerEnter2D(Collider2D collision)
+        {
+            Enemy temp = collision.GetComponent<Enemy>();
+            if (temp)
+            {
+                damage(temp.attackDmg);
+            }
         }
 
 
