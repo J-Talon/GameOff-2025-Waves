@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
 
 
     private List<GameItem> items;
+    private Camera cam;
     
     public void Start()
     {
@@ -26,7 +27,9 @@ public class Player : MonoBehaviour
         impulse = Vector2.zero;
         inputMovement = Vector2.zero;
         Subscribe();
-
+        cam = Camera.main;
+        
+        
         GameObject itemPulse = Resources.Load<GameObject>("Prefab/ItemPulseAttack");
         GameObject itemInstance = Instantiate(itemPulse);
         GameItem item = itemInstance.GetComponent<ItemPulse>();
@@ -47,14 +50,21 @@ public class Player : MonoBehaviour
 
     public void FixedUpdate()
     {
+
+        //todo: Add dedicated handler for this
+        Vector3 position = gameObject.transform.position;
+        position.z = cam.transform.position.z;
+        cam.transform.position = position;
+        
+        
         if (impulse.sqrMagnitude < 0.01f)
             impulse = Vector2.zero;
 
         rigidBody.linearVelocity = (inputMovement * moveSpeed) + impulse;
         impulse *= (1 - frictionCoeff);
 
-
-
+        
+        //todo: consider concurrent modification exceptions
         foreach (GameItem item in items)
         {
             item.ItemTick();
