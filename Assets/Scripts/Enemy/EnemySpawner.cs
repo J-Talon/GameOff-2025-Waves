@@ -1,12 +1,15 @@
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour {
-    public GameObject enemyPrefab;
+public class EnemySpawner : MonoBehaviour
+{
+    public Enemy enemyPrefab;
     private float spawnTimer = 0;
     private float spawnInterval = 2;
 
     private Transform player;
     private EnemyManager manager;
+
+    private int mobCap = 3;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,7 +22,7 @@ public class EnemySpawner : MonoBehaviour {
     void Update()
     {
         spawnTimer += Time.deltaTime;
-        if (spawnTimer >= spawnInterval)
+        if ((spawnTimer >= spawnInterval) && (manager.enemyList.Count <= mobCap))
         {
             spawnTimer = 0;
             SpawnEnemy();
@@ -28,15 +31,20 @@ public class EnemySpawner : MonoBehaviour {
 
     private void SpawnEnemy()
     {
-        Enemy temp = Instantiate(EntityFactory.createZombie(6f), GetRandomPosition(), transform.rotation);
+        Enemy temp = Instantiate(enemyPrefab, GetRandomPosition(), transform.rotation);
+        EntityFactory.createArcher(temp);
+        manager.enemyList.Add(temp);
+
+        temp = Instantiate(enemyPrefab, GetRandomPosition(), transform.rotation);
+        EntityFactory.createZombie(temp);
         manager.enemyList.Add(temp);
 
     }
 
     private Vector2 GetRandomPosition()
     {
-        Vector2 vpr = new Vector2(Screen.width, Screen.height) * Random.Range(1.1f, 1.4f); // Define viewport, (distance could use tweaking)
-
+        //Vector2 vpr = new Vector2(Screen.width, Screen.height) * Random.Range(1.1f, 1.4f); // Define viewport, (distance could use tweaking)
+        Vector2 vpr = new Vector2(20, 10) * Random.Range(1.1f, 1.4f);
         // Get values of corners
         Vector2 topLeft = new Vector2(player.position.x - vpr.x / 2, player.position.y - vpr.y / 2);
         Vector2 topRight = new Vector2(player.position.x + vpr.x / 2, player.position.y - vpr.y / 2);

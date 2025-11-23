@@ -2,10 +2,16 @@ using UnityEngine;
 
 static class EntityFactory
 {
-    static Enemy zombie = Resources.Load<Enemy>("Prefab/Enemy");
-    public static Enemy createZombie(float health)
+    public static void createZombie(Enemy enemy)
     {
-        zombie.init(health);
-        return zombie;
+        enemy.init(5, 5, 5, 5, 5);
+        enemy.AddBehaviour(new MeleeMovement());
+    }
+
+    public static void createArcher(Enemy enemy)
+    {
+        enemy.init(5, 5, 5, 5, 5);
+        enemy.AddBehaviour(new RangedMovement());
+        enemy.AddBehaviour(new RangedAttack());
     }
 }
