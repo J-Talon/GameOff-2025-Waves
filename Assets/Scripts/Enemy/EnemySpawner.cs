@@ -9,6 +9,8 @@ public class EnemySpawner : MonoBehaviour
     private Transform player;
     private EnemyManager manager;
 
+    private int mobCap = 3;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,7 +22,7 @@ public class EnemySpawner : MonoBehaviour
     void Update()
     {
         spawnTimer += Time.deltaTime;
-        if (spawnTimer >= spawnInterval)
+        if ((spawnTimer >= spawnInterval) && (manager.enemyList.Count <= mobCap))
         {
             spawnTimer = 0;
             SpawnEnemy();
@@ -31,6 +33,10 @@ public class EnemySpawner : MonoBehaviour
     {
         Enemy temp = Instantiate(enemyPrefab, GetRandomPosition(), transform.rotation);
         EntityFactory.createArcher(temp);
+        manager.enemyList.Add(temp);
+
+        temp = Instantiate(enemyPrefab, GetRandomPosition(), transform.rotation);
+        EntityFactory.createZombie(temp);
         manager.enemyList.Add(temp);
 
     }
