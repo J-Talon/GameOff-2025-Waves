@@ -8,7 +8,7 @@ public class Enemy : GameEntity
 
     private void Start()
     {
-        AddBehaviour(new MeleeMovement());
+        AddBehaviour(new RangedMovement());
         AddBehaviour(new RangedAttack());
     }
 

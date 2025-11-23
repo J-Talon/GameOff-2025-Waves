@@ -3,9 +3,11 @@ using UnityEngine;
 public class RangedAttack : IBehaviour
 {
     private Enemy enemy;
+    private ProjectileManager projectileManager;
     public void Register(Enemy enemy)
     {
         this.enemy = enemy;
+        projectileManager = GameObject.FindWithTag("GameController").GetComponent<ProjectileManager>();
     }
 
     public void DeRegister(Enemy enemy)
@@ -19,7 +21,7 @@ public class RangedAttack : IBehaviour
         {
             if (enemy.attackTimer > enemy.attackRate)
             {
-                Debug.Log("pew");
+                projectileManager.straightShot(enemy);
                 enemy.attackTimer = 0;
             }
         }

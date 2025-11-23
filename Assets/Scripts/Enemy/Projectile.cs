@@ -1,17 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-public class ProjectileBehaviour : GameEntity
+public class Projectile : GameEntity
 {
     public Vector3 targetPosition;
     public GameObject owner;
-
-    private void Start()
-    {
-        targetPosition = new Vector3(5, 4, 0);
-        SetLifeTime(attackRate);
-    }
-
     private void Update()
     {
         tick();
