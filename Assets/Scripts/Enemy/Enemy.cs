@@ -6,23 +6,18 @@ public class Enemy : GameEntity
 {
     private List<IBehaviour> behaviours = new List<IBehaviour>();
 
-    private void Start()
-    {
-        AddBehaviour(new RangedMovement());
-        AddBehaviour(new RangedAttack());
-    }
-
     public void AddBehaviour(IBehaviour behaviour)
     {
-        UnityEngine.Debug.Log(behaviour);
         behaviours.Add(behaviour);
         behaviour.Register(this);
+        Debug.Log("behaviour added");
     }
 
     public void RemoveBehaviour(IBehaviour behaviour)
     {
         behaviour.DeRegister(this);
         behaviours.Remove(behaviour);
+        Debug.Log("removing behaviour");
     }
     public void tick(Vector3 playerPosition)
     {
