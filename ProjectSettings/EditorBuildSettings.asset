@@ -41,6 +41,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PlayerPrototype.unity
     guid: 4079360e7b9ceefe29827afcd2ae4798
+  - enabled: 1
+    path: Assets/Scenes/Development -Chippy/MainC.unity
+    guid: b0dc805d6f640a71882533837fdc39d6
+  - enabled: 1
+    path: Assets/Scenes/Development -Chippy/PlayerDev.unity
+    guid: cddca607928d65758903b8dbc1cd8767
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
