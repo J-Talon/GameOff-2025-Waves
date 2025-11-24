@@ -177,6 +177,10 @@ PrefabInstance:
       value: PlayerDev
       objectReference: {fileID: 0}
     - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
+      propertyPath: 'gameplayScenes.Array.data[1]'
+      value: ParticleDev
+      objectReference: {fileID: 0}
+    - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
       propertyPath: 'gameplayScenes.Array.data[2]'
       value: GameplayMenu
       objectReference: {fileID: 0}
