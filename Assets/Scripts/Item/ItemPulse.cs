@@ -75,14 +75,14 @@ namespace Item
         public void OnTriggerEnter2D(Collider2D other)
         {
             GameObject hit = other.gameObject;
-            Entity entity = hit.GetComponent<Entity>();
+            GameEntity entity = hit.GetComponent<GameEntity>();
             if (entity == null)
                 return;
 
             //Debug.Log("damage: "+other.name);
             
             //you'd probably do the damage calculations here, or in the entity depending on what's easier
-            entity.damage(baseDamage);
+            entity.takeDamage(baseDamage,1);
         }
 
 
