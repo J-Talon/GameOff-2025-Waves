@@ -35,6 +35,10 @@ public class Player : MonoBehaviour
         GameObject itemInstance = Instantiate(itemPulse);
         GameItem item = itemInstance.GetComponent<ItemPulse>();
         AddItem(item);
+        
+        
+        //temp
+        ParticleFactory.LoadResources();
 
     }
 

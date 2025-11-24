@@ -28,8 +28,9 @@ namespace Effect
                 Complete();
                 return;
             }
-            
-            StartCoroutine(TickSequence());
+            current = queue[index];
+            current.UpdatePosition(transform.position);
+            current.Start();
         }
 
         public void SetPosition(Vector2 newPos)
@@ -38,29 +39,7 @@ namespace Effect
             if (current != null)
                 current.UpdatePosition(newPos);
         }
-
-
-        private IEnumerator TickSequence()
-        {
-            while (index < queue.Length)
-            {
-
-                if (current == null || current.IsFinished())
-                {
-                    if (!Step())
-                    {
-                        Complete();
-                        yield break;
-                    }
-                }
-
-                yield return new WaitForSeconds(period);
-            }
-
-            Complete();
-            yield return null;
-        }
-
+        
 
         public bool Step()
         {
@@ -72,6 +51,8 @@ namespace Effect
                 return false;
             
             current = queue[index];
+            current.UpdatePosition(transform.position);
+            current.Start();
             return true;
         }
 

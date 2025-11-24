@@ -1,4 +1,5 @@
 using System;
+using Effect;
 using UnityEngine;
 
 namespace Item
@@ -15,6 +16,8 @@ namespace Item
         private CircleCollider2D coll;
         private bool inAnimation;
         private float range;
+
+        private ParticleBehaviour behaviour = null;
 
         public override void Init()
         {
@@ -33,6 +36,9 @@ namespace Item
                 inAnimation = false;
                 range = 0;
                 coll.radius = range;
+                
+                if (behaviour != null)
+                    behaviour.Complete();
                 return;
             }
             
@@ -40,7 +46,11 @@ namespace Item
             range = scale;
             coll.radius = range;
 
-
+            if (behaviour != null)
+            {
+                behaviour.UpdatePosition(transform.position);
+                behaviour.TickContext(scale, range);
+            }
         }
 
         public void Attack()
@@ -50,6 +60,7 @@ namespace Item
             
             inAnimation = true;
             lastAttackTime = base.GetTimeMillis();
+            behaviour = ParticleFactory.PlayParticle("ParticleRing", transform.position);
         }
 
         public override void ItemTick()

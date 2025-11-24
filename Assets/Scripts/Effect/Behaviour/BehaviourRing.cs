@@ -7,10 +7,14 @@ namespace Effect.Behaviour
 
         public override void TickContext(params float[] context)
         {
-            ParticleSystem.ShapeModule sm = particleSystem.shape;
-            if (context == null || context.Length == 0) return;
+            ParticleSystem.MainModule main = particleSystem.main;
+            if (context == null || context.Length < 2) return;
+
+            ParticleSystem.MinMaxCurve curve = main.startSpeed;
+            curve.constant = context[0];
             
-            sm.radius = context[0];
+            ParticleSystem.ShapeModule shape = particleSystem.shape;
+            shape.radius = context[1];
         }
 
         public override bool IsFinished()
