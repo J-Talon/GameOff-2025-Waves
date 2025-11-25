@@ -8,6 +8,7 @@ public class SceneBootstrapper : MonoBehaviour
     [SerializeField]
     List<GameObject> prefabs;
     Scene bootstrapperScene;
+
     void Awake()
     {
         bootstrapperScene = gameObject.scene;
@@ -28,9 +29,5 @@ public class SceneBootstrapper : MonoBehaviour
             yield return null;
         }
         yield return null;
-    }
-    void OnActiveSceneChangedbySceneBootstrapper(Scene current, Scene next)
-    {
-        Debug.Log($"{this} has changed the active scene from {current.name} to {next.name}");
     }
 }
