@@ -1,27 +1,43 @@
-using UnityEditor.Experimental.GraphView;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
-public class Enemy : Entity
+public class Enemy : GameEntity
 {
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private Rigidbody2D rb;
-    private float moveSpeed = 0.5f;
+    private List<IBehaviour> behaviours = new List<IBehaviour>();
 
-    public void init(float hp)
+    public void AddBehaviour(IBehaviour behaviour)
     {
-        health = hp;
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
-    public override void Attack()
-    {
-        return;
+        behaviours.Add(behaviour);
+        behaviour.Register(this);
+        Debug.Log("behaviour added");
     }
 
-    // Update is called once per frame
+    public void RemoveBehaviour(IBehaviour behaviour)
+    {
+        behaviour.DeRegister(this);
+        behaviours.Remove(behaviour);
+        Debug.Log("removing behaviour");
+    }
     public void tick(Vector3 playerPosition)
     {
-        Vector3 direction = playerPosition - transform.position;
-        rb.linearVelocity = new Vector2(direction.x * moveSpeed, direction.y * moveSpeed);
+        attackTimer += Time.deltaTime;
+        foreach (IBehaviour behaviour in behaviours)
+        {
+            behaviour.tick(playerPosition);
+        }
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Player") // Temporarily using Player as collider
+        {
+            takeDamage(5f, 5f);
+        }
+        /*Projectile temp = collision.GetComponent<Projectile>(); // WILL CHANGE TO A PROJECTILE CLASS ONCE PROJECTILES ARE CREATED
+        if (temp)
+        {
+            damage(temp.attackDmg);
+        }*/
     }
 }

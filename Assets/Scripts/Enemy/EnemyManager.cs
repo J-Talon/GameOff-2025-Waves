@@ -15,7 +15,11 @@ public class EnemyManager : MonoBehaviour
     {
         foreach (Enemy e in enemyList)
         {
-            e.tick(player.position);
+            if (e != null)
+            {
+                e.tick(player.position);
+            }
         }
+        enemyList.RemoveAll(item => item == null);
     }
 }
