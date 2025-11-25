@@ -1,7 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(RectTransform))]
-public class HealthMarkerUpdater : MonoBehaviour, IWorker
+public class EnergyMarkerUpdater : MonoBehaviour
 {
     private RectTransform rectTransform;
 
@@ -12,11 +11,11 @@ public class HealthMarkerUpdater : MonoBehaviour, IWorker
     }
     public void Initialize()
     {
-        HealthManager.OnHealthChange += UpdateBar;
+        EqualizerManager.OnEnergyChange += UpdateBar;
     }
     private void UpdateBar(PlayerData data, float amount)
     {
-        float normalized = data.currentHealth / data.maxHealth;
+        float normalized = data.currentEnergy / data.maxEnergy;
         rectTransform.localScale = new Vector3(normalized, 1f, 1f);
     }
 }

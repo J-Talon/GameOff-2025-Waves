@@ -2,19 +2,23 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthManager : MonoBehaviour, IManager
+public class HealthManager : MonoBehaviour, IManager, IDataUser
 {
     [SerializeField]
     PlayerData playerData;
 
     private List<IWorker> workers = new List<IWorker>();
+    private HealthManager Instance;
 
-    public static event Action HealthIncrease;
-    public static event Action HealthDecrease;
-
-    void Start()
+    public static event Action<PlayerData, float> OnHealthChange;
+    private void OnEnable()
     {
-        Main.Instance.AddManager(this);
+        Instance = this;
+    }
+    private void Start()
+    {
+        Main.Instance.AddManager(Instance);
+        OnHealthChange += UpdateHealthData;
     }
     public void Register(IWorker worker)
     {
@@ -25,6 +29,20 @@ public class HealthManager : MonoBehaviour, IManager
     {
         workers.Remove(worker);
         Debug.Log($"Deregistered {worker} from {this}...");
+    }
+    public void SetData(GameData data)
+    {
+        playerData = data.playerData;
+        Debug.Log($"{this} has been given GameData");
+    }
+    public void UpdateHealthData(PlayerData data, float changeAmount)
+    {
+        data.currentHealth = Mathf.Clamp(data.currentHealth + changeAmount, 0f, data.maxHealth);
+    }
+    void OnDestroy()
+    {
+        if (Main.Instance != null)
+            Main.Instance.RemoveManager(this);
     }
 }
 

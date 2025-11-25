@@ -6,14 +6,19 @@ public class ScoreManager : MonoBehaviour, IManager, IDataUser
 {
     [SerializeField]
     PlayerData playerData;
-
+    private ScoreManager Instance;
     private List<IWorker> workers = new List<IWorker>();
 
-    public static event Action ScoreIncrease;
+    public static event Action<PlayerData, float> OnScoreChange;
 
-    void Start()
+    private void OnEnable()
     {
-        Main.Instance.AddManager(this);
+        Instance = this;
+    }
+    private void Start()
+    {
+        Main.Instance.AddManager(Instance);
+        OnScoreChange += UpdateScore;
     }
     public void Register(IWorker worker)
     {
@@ -29,7 +34,16 @@ public class ScoreManager : MonoBehaviour, IManager, IDataUser
     public void SetData(GameData data)
     {
         playerData = data.playerData;
+        Debug.Log($"{this} has been given GameData");
     }
-
+    public void UpdateScore(PlayerData data, float changeAmount)
+    {
+        data.score += changeAmount;
+    }
+    void OnDestroy()
+    {
+        if (Main.Instance != null)
+            Main.Instance.RemoveManager(this);
+    }
 }
 

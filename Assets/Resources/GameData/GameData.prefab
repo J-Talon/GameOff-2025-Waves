@@ -44,3 +44,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06574c6103eaf5a4ba1ba6ad50b2e45f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerData:
+    maxHealth: 100
+    currentHealth: 100
+    score: 0
+  weaponData:
+    attackPeriod: 1000
+    expansionSpeed: 500
+    maxRange: 5
+    maxDamage: 0
+    baseDamage: 1
+    damageMultiplier: 0
+    maxEnergyCost: 0
+    energyCost: 0
+    energyMultiplier: 0
+  weaponCount: 5
+  weapons: []
