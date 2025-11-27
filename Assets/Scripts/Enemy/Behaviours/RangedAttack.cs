@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class RangedAttack : IBehaviour
 {
-    private Enemy enemy;
+    private GameEntity enemy;
     private ProjectileManager projectileManager;
-    public void Register(Enemy enemy)
+    public void Register(GameEntity enemy)
     {
         this.enemy = enemy;
         projectileManager = GameObject.FindWithTag("GameController").GetComponent<ProjectileManager>();
     }
 
-    public void DeRegister(Enemy enemy)
+    public void DeRegister(GameEntity enemy)
     {
         this.enemy = null;
     }
