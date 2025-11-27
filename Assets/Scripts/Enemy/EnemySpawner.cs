@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public Enemy enemyPrefab;
     private float spawnTimer = 0;
     private float spawnInterval = 2;
 
@@ -14,7 +13,7 @@ public class EnemySpawner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player = GameObject.FindWithTag("Player").transform;
+        player = FindFirstObjectByType<Player>().transform;
         manager = GameObject.FindWithTag("GameController").GetComponent<EnemyManager>();
     }
 
@@ -31,12 +30,8 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        Enemy temp = Instantiate(enemyPrefab, GetRandomPosition(), transform.rotation);
-        EntityFactory.createArcher(temp);
-        manager.enemyList.Add(temp);
-
-        temp = Instantiate(enemyPrefab, GetRandomPosition(), transform.rotation);
-        EntityFactory.createZombie(temp);
+        Enemy temp = EntityFactory.createArcher();
+        temp.transform.position = GetRandomPosition();
         manager.enemyList.Add(temp);
 
     }

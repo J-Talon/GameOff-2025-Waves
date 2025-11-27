@@ -9,7 +9,7 @@ public class EnemyManager : MonoBehaviour
 
     public void Start()
     {
-        player = GameObject.FindWithTag("Player").transform;
+        player = FindFirstObjectByType<Player>().transform;
     }
     public void FixedUpdate()
     {

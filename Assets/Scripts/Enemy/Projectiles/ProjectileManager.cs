@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ProjectileManager : MonoBehaviour
 {
@@ -21,14 +22,5 @@ public class ProjectileManager : MonoBehaviour
             }
         }
         projectileList.RemoveAll(item => item == null);
-    }
-
-    public void straightShot(Enemy enemy)
-    {
-        Projectile p = Instantiate(projectile, enemy.transform.position, enemy.transform.rotation);
-        p.init(0, 5, 5, 0, 5);
-        p.targetPosition = GameObject.FindWithTag("Player").transform.position;
-        projectileList.Add(p);
-
     }
 }

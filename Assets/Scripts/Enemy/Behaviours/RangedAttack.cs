@@ -21,7 +21,12 @@ public class RangedAttack : IBehaviour
         {
             if (enemy.attackTimer > enemy.attackRate)
             {
-                projectileManager.straightShot(enemy);
+                Projectile temp = EntityFactory.createStraightShot();
+                temp.transform.position = enemy.transform.position;
+                temp.transform.rotation = enemy.transform.rotation;
+                temp.targetPosition = playerPosition;
+                projectileManager.projectileList.Add(temp);
+
                 enemy.attackTimer = 0;
             }
         }

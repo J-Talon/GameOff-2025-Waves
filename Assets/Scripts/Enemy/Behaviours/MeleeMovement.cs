@@ -15,7 +15,16 @@ public class MeleeMovement : IBehaviour
     public void tick(Vector3 playerPosition)
     {
         Vector3 direction = playerPosition - enemy.transform.position;
-        direction = direction.normalized;
-        enemy.rb.linearVelocity = new Vector2(direction.x * enemy.moveSpeed, direction.y * enemy.moveSpeed);
+
+        if (direction.magnitude > 0.5)
+        {
+            direction = direction.normalized;
+            enemy.rb.linearVelocity = new Vector2(direction.x * enemy.moveSpeed, direction.y * enemy.moveSpeed);
+        } else
+        {
+            enemy.rb.linearVelocity = Vector2.zero;
+        }
+
+        // IF FACING PERFORMANCE ISSUES, TAKE OUT RIGIDBODY AND USE POSITION TO MOVE
     }
 }
