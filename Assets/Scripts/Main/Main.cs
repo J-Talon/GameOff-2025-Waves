@@ -19,6 +19,8 @@ public class Main : MonoBehaviour
     List<IManager> managers = new List<IManager>();
 
     public static Main Instance;
+    // public Player player;
+
     [SerializeField] private GameData gameData;
     [SerializeField] private SceneHelper persistent;
     [SerializeField] private SceneHelper mainmenu;
@@ -54,8 +56,15 @@ public class Main : MonoBehaviour
     }
     public IEnumerator LoadGameplay()
     {
-        gameData.InitializeNewData();
+        yield return null;
+        yield return null;
+        yield return null;
         yield return StartCoroutine(gameplay.LoadScenes());
+        gameData.InitializeNewData();
+        yield return null;
+        yield return null;
+        yield return null;
+        yield return null;
         yield return null;
         ProvideDataToManagers();
         previous.SetScenes(current.GetScenes());

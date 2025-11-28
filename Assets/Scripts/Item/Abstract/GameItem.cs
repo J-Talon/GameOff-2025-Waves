@@ -1,13 +1,12 @@
-using System;
 using UnityEngine;
 
 namespace Item
 {
-    public abstract class GameItem: MonoBehaviour
+    public abstract class GameItem : MonoBehaviour
     {
         protected float frequency = 0;
         protected float amplitude = 0;
-
+        public WeaponData data;
         public abstract void ItemTick();
         public abstract void Init();
 

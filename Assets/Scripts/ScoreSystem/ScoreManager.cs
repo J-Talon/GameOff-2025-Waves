@@ -6,7 +6,7 @@ public class ScoreManager : MonoBehaviour, IManager, IDataUser
 {
     [SerializeField]
     PlayerData playerData;
-    private ScoreManager Instance;
+    public static ScoreManager Instance;
     private List<IWorker> workers = new List<IWorker>();
 
     public static event Action<PlayerData, float> OnScoreChange;
@@ -42,8 +42,7 @@ public class ScoreManager : MonoBehaviour, IManager, IDataUser
     }
     void OnDestroy()
     {
-        if (Main.Instance != null)
-            Main.Instance.RemoveManager(this);
+        Main.Instance.RemoveManager(this);
     }
 }
 
