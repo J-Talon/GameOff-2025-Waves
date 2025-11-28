@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -20,11 +21,14 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        spawnTimer += Time.deltaTime;
-        if ((spawnTimer >= spawnInterval) && (manager.enemyList.Count <= mobCap))
+        if (SceneManager.GetActiveScene().name == "Temporary")
         {
-            spawnTimer = 0;
-            SpawnEnemy();
+            spawnTimer += Time.deltaTime;
+            if ((spawnTimer >= spawnInterval) && (manager.enemyList.Count <= mobCap))
+            {
+                spawnTimer = 0;
+                SpawnEnemy();
+            }
         }
     }
 

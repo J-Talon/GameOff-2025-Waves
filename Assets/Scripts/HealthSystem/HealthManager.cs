@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class HealthManager : MonoBehaviour, IManager, IDataUser
 {
+    public static HealthManager Instance;
     [SerializeField]
     PlayerData playerData;
 
     private List<IWorker> workers = new List<IWorker>();
-    private HealthManager Instance;
 
     public static event Action<PlayerData, float> OnHealthChange;
     private void OnEnable()
@@ -38,6 +38,10 @@ public class HealthManager : MonoBehaviour, IManager, IDataUser
     public void UpdateHealthData(PlayerData data, float changeAmount)
     {
         data.currentHealth = Mathf.Clamp(data.currentHealth + changeAmount, 0f, data.maxHealth);
+    }
+    public void InvokeHealthEvent(float changeAmount)
+    {
+        OnHealthChange?.Invoke(playerData, changeAmount);
     }
     void OnDestroy()
     {

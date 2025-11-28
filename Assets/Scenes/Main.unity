@@ -158,7 +158,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
       propertyPath: gameplayScenes.Array.size
-      value: 4
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
       propertyPath: mainmenuScenes.Array.size
@@ -166,19 +166,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
       propertyPath: persistentScenes.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
       propertyPath: 'gameoverScenes.Array.data[0]'
       value: GameOver
       objectReference: {fileID: 0}
     - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
+      propertyPath: 'gameplayScenes.Array.data[0]'
+      value: Temporary
+      objectReference: {fileID: 0}
+    - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
+      propertyPath: 'gameplayScenes.Array.data[1]'
+      value: HealthSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
       propertyPath: 'gameplayScenes.Array.data[2]'
-      value: GameplayMenu
+      value: ScoreSystem
       objectReference: {fileID: 0}
     - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
       propertyPath: 'gameplayScenes.Array.data[3]'
+      value: GameplayMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
+      propertyPath: 'gameplayScenes.Array.data[4]'
       value: Equalizer
+      objectReference: {fileID: 0}
+    - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
+      propertyPath: 'gameplayScenes.Array.data[5]'
+      value: PlayerDev
+      objectReference: {fileID: 0}
+    - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
+      propertyPath: 'gameplayScenes.Array.data[6]'
+      value: EnemySpawnerPrototype
       objectReference: {fileID: 0}
     - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
       propertyPath: 'mainmenuScenes.Array.data[0]'
@@ -191,6 +211,10 @@ PrefabInstance:
     - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
       propertyPath: 'persistentScenes.Array.data[1]'
       value: GameData
+      objectReference: {fileID: 0}
+    - target: {fileID: 5577201925874268634, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
+      propertyPath: 'persistentScenes.Array.data[2]'
+      value: ConstantLoad
       objectReference: {fileID: 0}
     - target: {fileID: 8456254339653440568, guid: 3b5c28c18d64347499a0bb9c27ed8aa9, type: 3}
       propertyPath: m_Name

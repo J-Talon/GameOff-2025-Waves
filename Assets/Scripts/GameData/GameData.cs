@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -7,13 +8,18 @@ public class GameData : MonoBehaviour
 {
     [SerializeField] public PlayerData playerData;
     [SerializeField] public EnemyData enemyData;
-    [SerializeField] public int weaponCount;
+    [SerializeField] public int weaponCount = 5;
     [SerializeField] public List<WeaponData> weapons = new List<WeaponData>();
 
     private void Awake()
     {
         Main.Instance.SetGameData(this);
     }
+    public void GetWeaponDataScriptableObjects()
+    {
+        WeaponData[] weapons = Resources.LoadAll<WeaponData>("GameData");
+    }
+
     public void InitializeNewData()
     {
         playerData = new PlayerData();
@@ -21,6 +27,7 @@ public class GameData : MonoBehaviour
         {
             weapons.Clear();
         }
+        weapons = Resources.LoadAll<WeaponData>("GameData").ToList();
         for (int i = 0; i < weaponCount; i++)
         {
             weapons.Add(new WeaponData());
@@ -35,10 +42,13 @@ public interface IDataUser
 [Serializable]
 public class PlayerData
 {
+
     [SerializeField] public float maxHealth = 100;
     [SerializeField] public float currentHealth = 100;
     [SerializeField] public float maxEnergy = 1000;
     [SerializeField] public float currentEnergy = 1000;
+    [SerializeField] public float moveSpeed = 5;
+    [SerializeField] public float frictionCoeff = 0.02f; // this is for knockback calculation 
     [SerializeField] public float score = 0;
 }
 [Serializable]
@@ -51,7 +61,8 @@ public class EnemyData
     float scoreReward;
 }
 [Serializable]
-public class WeaponData
+[CreateAssetMenu(fileName = "NewWeapon", menuName = "Game/WeaponData")]
+public class WeaponData : ScriptableObject
 {
     [SerializeField] public float attackPeriod = 1000;  //in millis
     [SerializeField] public float expansionSpeed = 500; // time it takes to reach max range

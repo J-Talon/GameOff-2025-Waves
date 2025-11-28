@@ -2,47 +2,51 @@ using System.Collections.Generic;
 using Effect;
 using EventSystem;
 using Item;
-using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IManager, IDataUser
 {
     private Vector2 inputMovement;
     private Vector2 impulse;
 
     private Rigidbody2D rigidBody;
 
-    [SerializeField] private float health = 1;
-    [SerializeField] private float maxHealth = 1;
-    [SerializeField] private float moveSpeed = 5;
-    [SerializeField] private float frictionCoeff = 0.02f; // this is for knockback calculation 
-
+    [SerializeField] GameData data;
 
     private List<GameItem> items;
+    private GameObject itemPulse;
     private Camera cam;
-    
+
     public void Start()
     {
+        Main.Instance.AddManager(this);
         items = new List<GameItem>();
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
         impulse = Vector2.zero;
         inputMovement = Vector2.zero;
         Subscribe();
         cam = Camera.main;
-        
-        
-        GameObject itemPulse = Resources.Load<GameObject>("Prefab/ItemPulseAttack");
-        GameObject itemInstance = Instantiate(itemPulse);
-        GameItem item = itemInstance.GetComponent<ItemPulse>();
-        AddItem(item);
-        
-        
-        //temp
+
+        itemPulse = Resources.Load<GameObject>("Prefab/ItemPulseAttack");
         ParticleFactory.LoadResources();
-
     }
-
-
+    public void SetData(GameData data)
+    {
+        this.data = data;
+        Debug.Log($"{this} has been given GameData");
+        InitializeWeapons();
+    }
+    public void InitializeWeapons()
+    {
+        for (int i = 0; i < data.weaponCount; i++)
+        {
+            GameObject itemInstance = Instantiate(itemPulse);
+            GameItem item = itemInstance.GetComponent<ItemPulse>();
+            item.data = this.data.weapons[i];
+            AddItem(item);
+        }
+    }
     public void AddItem(GameItem item)
     {
         item.gameObject.transform.parent = gameObject.transform;
@@ -50,9 +54,6 @@ public class Player : MonoBehaviour
         item.Init();
         items.Add(item);
     }
-
-
-
     public void FixedUpdate()
     {
 
@@ -60,21 +61,23 @@ public class Player : MonoBehaviour
         Vector3 position = gameObject.transform.position;
         position.z = cam.transform.position.z;
         cam.transform.position = position;
-        
-        
+
+
         if (impulse.sqrMagnitude < 0.01f)
             impulse = Vector2.zero;
-
-        rigidBody.linearVelocity = (inputMovement * moveSpeed) + impulse;
-        impulse *= (1 - frictionCoeff);
-
-        
-        //todo: consider concurrent modification exceptions
-        foreach (GameItem item in items)
+        if (data != null)
         {
-            item.ItemTick();
+            rigidBody.linearVelocity = (inputMovement * data.playerData.moveSpeed) + impulse;
+            impulse *= (1 - data.playerData.frictionCoeff);
         }
-
+        //todo: consider concurrent modification exceptions
+        if (SceneManager.GetActiveScene().name == "Temporary")
+        {
+            foreach (GameItem item in items)
+            {
+                item.ItemTick();
+            }
+        }
     }
 
     //if you need to apply knockback to the player
@@ -97,13 +100,14 @@ public class Player : MonoBehaviour
         if (damage < 0)
             return false;
 
-        float next = this.health - damage;
+        float next = this.data.playerData.currentHealth - damage;
         if (next <= 0)
         {
             die();
         }
 
-        this.health = next;
+        this.data.playerData.currentHealth = next;
+        HealthManager.Instance.InvokeHealthEvent(-damage);
         return true;
     }
 
@@ -123,6 +127,17 @@ public class Player : MonoBehaviour
     public void Subscribe()
     {
         EventManager.keyboardMoveActionEvent.Subscribe(onKeyboardMoveInput);
+    }
+
+    public void Register(IWorker worker)
+    {
+    }
+    public void Deregister(IWorker worker)
+    {
+    }
+    public void OnDestroy()
+    {
+        Main.Instance.RemoveManager(this);
     }
 }
 
