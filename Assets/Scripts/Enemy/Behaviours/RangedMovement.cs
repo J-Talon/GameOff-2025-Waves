@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class RangedMovement : IBehaviour
 {
-    private Enemy enemy;
-    public void Register(Enemy enemy)
+    private GameEntity enemy;
+    public void Register(GameEntity enemy)
     {
         this.enemy = enemy;
     }
 
-    public void DeRegister(Enemy enemy)
+    public void DeRegister(GameEntity enemy)
     {
         this.enemy = null;
     }

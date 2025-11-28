@@ -5,15 +5,21 @@ public class Projectile : GameEntity
 {
     public Vector3 targetPosition;
     public GameObject owner;
+
+    private void Start()
+    {
+        Vector3 direction = targetPosition - transform.position;
+        direction = direction.normalized;
+        rb.linearVelocity = new Vector2(direction.x * moveSpeed, direction.y * moveSpeed);
+        SetLifeTime(attackRate);
+    }
     private void Update()
     {
         tick();
     }
     public void tick()
     {
-        Vector3 direction = targetPosition - transform.position;
-        direction = direction.normalized;
-        rb.linearVelocity = new Vector2(direction.x * moveSpeed, direction.y * moveSpeed);
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
