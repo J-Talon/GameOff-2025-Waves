@@ -15,6 +15,7 @@ public class RangedMovement : IBehaviour
     public void tick(Vector3 playerPosition)
     {
         Vector3 direction = playerPosition - enemy.transform.position;
+        Debug.Log(direction.magnitude);
         if (direction.magnitude > 3) // If enemy is over 3 units away, move towards enemy
         {
             direction = direction.normalized;

@@ -10,7 +10,7 @@ public class EnemyManager : MonoBehaviour, IManager, IDataUser
     public void Start()
     {
         Main.Instance.AddManager(this);
-        player = GameObject.FindWithTag("Player").transform;
+        player = FindFirstObjectByType<Player>().transform;
     }
 
     public void FixedUpdate()
