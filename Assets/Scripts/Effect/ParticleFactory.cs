@@ -8,8 +8,6 @@ namespace Effect
     {
         private static Dictionary<string, GameObject> particles = new Dictionary<string, GameObject>();
         private static GameObject sequencer;
-        
-        //todo add prefab
 
 
         public static void LoadResources()
