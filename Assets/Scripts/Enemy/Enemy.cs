@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
 
 public class Enemy : GameEntity
 {
@@ -11,15 +10,10 @@ public class Enemy : GameEntity
 
     public int points;
 
-    public void Start()
-    {
-        circleCollider = GetComponent<CircleCollider2D>();
-    }
-
-
     private void Start()
     {
         Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+        circleCollider = GetComponent<CircleCollider2D>();
         rb.freezeRotation = true;
     }
 

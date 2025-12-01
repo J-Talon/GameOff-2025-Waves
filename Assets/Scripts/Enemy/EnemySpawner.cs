@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
     private Transform player;
     private EnemyManager manager;
 
-    private int mobCap = 200;
+    private int mobCap = 5;
     private float difficultyMult = 1.5f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

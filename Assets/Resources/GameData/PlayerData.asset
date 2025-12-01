@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 264248a4d7138324eb045d77d1460c67, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  maxHealth: 1000
-  currentHealth: 1000
-  maxEnergy: 10000
-  currentEnergy: 10000
+  maxHealth: 50
+  currentHealth: 50
+  maxEnergy: 1000
+  currentEnergy: 1000
   moveSpeed: 10
   frictionCoeff: 0.02
   score: 0
