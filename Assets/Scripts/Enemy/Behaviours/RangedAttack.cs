@@ -17,7 +17,7 @@ public class RangedAttack : IBehaviour
     public void tick(Vector3 playerPosition)
     {
         Vector3 direction = playerPosition - enemy.transform.position;
-        if (direction.magnitude < 4)
+        if (direction.magnitude < 8)
         {
             if (enemy.attackTimer > enemy.attackRate)
             {

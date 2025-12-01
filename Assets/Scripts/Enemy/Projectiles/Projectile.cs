@@ -32,7 +32,7 @@ public class Projectile : GameEntity
         }
 
         player.damage(attackDmg);
-        Destroy(gameObject);
+        Destroy(this.gameObject);
 
     }
 

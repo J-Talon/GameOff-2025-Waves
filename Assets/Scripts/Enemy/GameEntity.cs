@@ -24,7 +24,8 @@ public abstract class GameEntity : MonoBehaviour
 
     public void takeDamage(float dmg, float atkFrequency)
     {
-        health -= dmg - Math.Abs(targetFrequency - atkFrequency);
+        Debug.Log("damage: " + dmg + "health: " + health);
+        health -= dmg;
         if (health < 0)
         {
             Destroy(gameObject);

@@ -21,7 +21,6 @@ public class Enemy : GameEntity
     }
     public void tick(Vector3 playerPosition)
     {
-        Debug.Log("hello?");
         attackTimer += Time.deltaTime;
         foreach (IBehaviour behaviour in behaviours)
         {

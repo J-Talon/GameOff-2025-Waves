@@ -16,7 +16,7 @@ static class EntityFactory
     public static Enemy createArcher()
     {
         Enemy archer = Object.Instantiate(enemy);
-        archer.init(5, 5, 5, 5, 5);
+        archer.init(100, 5, 5, 5, 5);
         archer.AddBehaviour(new RangedMovement());
         archer.AddBehaviour(new RangedAttack());
         return archer;

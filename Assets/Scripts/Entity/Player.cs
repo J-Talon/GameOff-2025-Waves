@@ -89,6 +89,7 @@ public class Player : MonoBehaviour, IManager, IDataUser
 
     public void die()
     {
+        Destroy(gameObject);
         // do stuff related to death here
         Unsubscribe();
     }
