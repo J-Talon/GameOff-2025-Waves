@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,30 +8,31 @@ using UnityEngine;
 public class GameData : MonoBehaviour
 {
     [SerializeField] public PlayerData playerData;
-    [SerializeField] public EnemyData enemyData;
     [SerializeField] public int weaponCount = 5;
     [SerializeField] public List<WeaponData> weapons = new List<WeaponData>();
-
+    private void OnValidate()
+    {
+        weapons = Resources.LoadAll<WeaponData>("GameData").ToList();
+        playerData = Resources.Load<PlayerData>("GameData");
+    }
     private void Awake()
     {
         Main.Instance.SetGameData(this);
     }
-    public void GetWeaponDataScriptableObjects()
+    public IEnumerator InitializeNewData()
     {
-        WeaponData[] weapons = Resources.LoadAll<WeaponData>("GameData");
-    }
-
-    public void InitializeNewData()
-    {
-        playerData = new PlayerData();
+        playerData = Resources.Load<PlayerData>("GameData/PlayerData");
+        yield return null;
         if (weapons.Count > 0)
         {
             weapons.Clear();
         }
         weapons = Resources.LoadAll<WeaponData>("GameData").ToList();
-        for (int i = 0; i < weaponCount; i++)
+        yield return null;
+        while (weapons.Count < weaponCount)
         {
-            weapons.Add(new WeaponData());
+            weapons.Add(ScriptableObject.CreateInstance<WeaponData>());
+            yield return null;
         }
     }
 }
@@ -40,37 +42,30 @@ public interface IDataUser
 }
 
 [Serializable]
-public class PlayerData
+[CreateAssetMenu(fileName = "NewPlayer", menuName = "Game/PlayerData")]
+public class PlayerData : ScriptableObject
 {
 
-    [SerializeField] public float maxHealth = 100;
-    [SerializeField] public float currentHealth = 100;
-    [SerializeField] public float maxEnergy = 1000;
-    [SerializeField] public float currentEnergy = 1000;
-    [SerializeField] public float moveSpeed = 5;
-    [SerializeField] public float frictionCoeff = 0.02f; // this is for knockback calculation 
+    [SerializeField] public float maxHealth;
+    [SerializeField] public float currentHealth;
+    [SerializeField] public float maxEnergy;
+    [SerializeField] public float currentEnergy;
+    [SerializeField] public float moveSpeed;
+    [SerializeField] public float frictionCoeff; // this is for knockback calculation 
     [SerializeField] public float score = 0;
 }
-[Serializable]
-public class EnemyData
-{
-    float maxHealth;      //maybe use list of scriptable objects to represent each enemy variation
-    float currentHealth;
-    float speed;
-    float resonantFrequency;
-    float scoreReward;
-}
+
 [Serializable]
 [CreateAssetMenu(fileName = "NewWeapon", menuName = "Game/WeaponData")]
 public class WeaponData : ScriptableObject
 {
-    [SerializeField] public float attackPeriod = 1000;  //in millis
-    [SerializeField] public float expansionSpeed = 500; // time it takes to reach max range
-    [SerializeField] public float maxRange = 5; //units
-    [SerializeField] public float baseDamage = 1f;
+    [SerializeField] public float attackPeriod;  //in millis
+    [SerializeField] public float expansionSpeed; // time it takes to reach max range
+    [SerializeField] public float maxRange; //units
+    [SerializeField] public float baseDamage;
     [SerializeField] public float currentDamage;
-    [SerializeField] public float damageMultiplier = 1;
-    [SerializeField] public float baseEnergyCost = 10;
+    [SerializeField] public float damageMultiplier;
+    [SerializeField] public float baseEnergyCost;
     [SerializeField] public float currentEnergyCost;
-    [SerializeField] public float energyMultiplier = 1;
+    [SerializeField] public float energyMultiplier;
 }

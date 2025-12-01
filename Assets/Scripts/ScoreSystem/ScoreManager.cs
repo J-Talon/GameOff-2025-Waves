@@ -9,7 +9,7 @@ public class ScoreManager : MonoBehaviour, IManager, IDataUser
     public static ScoreManager Instance;
     private List<IWorker> workers = new List<IWorker>();
 
-    public static event Action<PlayerData, float> OnScoreChange;
+    public event Action<PlayerData, float> OnScoreChange;
 
     private void OnEnable()
     {

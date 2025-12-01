@@ -10,14 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: Weapon_3
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  attackPeriod: 1000
-  expansionSpeed: 500
-  maxRange: 10
-  baseDamage: 100
-  currentDamage: 444.02423
-  damageMultiplier: 4.4402423
-  baseEnergyCost: 20
-  currentEnergyCost: 88.80485
-  energyMultiplier: 4.4402423
+  m_Name: PlayerData
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerData
+  maxHealth: 1000
+  currentHealth: 1000
+  maxEnergy: 10000
+  currentEnergy: 10000
+  moveSpeed: 10
+  frictionCoeff: 0.02
+  score: 0

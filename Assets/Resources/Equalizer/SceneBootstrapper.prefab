@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3799095040202742592
+--- !u!1 &6311039562563194018
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3346934929025219310}
-  - component: {fileID: 3919886622700093450}
+  - component: {fileID: 4588413126764614308}
+  - component: {fileID: 6515391819542439076}
   m_Layer: 0
-  m_Name: GameData
+  m_Name: SceneBootstrapper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3346934929025219310
+--- !u!4 &4588413126764614308
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3799095040202742592}
+  m_GameObject: {fileID: 6311039562563194018}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,23 +32,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3919886622700093450
+--- !u!114 &6515391819542439076
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3799095040202742592}
+  m_GameObject: {fileID: 6311039562563194018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06574c6103eaf5a4ba1ba6ad50b2e45f, type: 3}
+  m_Script: {fileID: 11500000, guid: f1ef4711116c05443aab7a2a2d0cdce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData: {fileID: 0}
-  weaponCount: 5
-  weapons:
-  - {fileID: 11400000, guid: 76fce92639c49ca46b3e9e90b9737591, type: 2}
-  - {fileID: 11400000, guid: 96c4493d7dc067843b094a10b444f030, type: 2}
-  - {fileID: 11400000, guid: 9c484ccf6b8db474b92718a2efa9e8f7, type: 2}
-  - {fileID: 11400000, guid: 22a18b62d26ef13448e9046c9c0c3421, type: 2}
-  - {fileID: 11400000, guid: 62697024a814ba247a6aa73e036c6045, type: 2}
+  prefabs:
+  - {fileID: 3869383968260344031, guid: a7fddce3ebc0f124ea03bfdb0b32a51a, type: 3}
+  - {fileID: 5801079733781189620, guid: 52ee47f0b685a7244aec6827a47a0dd0, type: 3}
+  - {fileID: 2548436682184583877, guid: d06b51c66ce6b7d4e9809ee59dee1fdd, type: 3}

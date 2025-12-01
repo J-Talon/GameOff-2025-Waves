@@ -6,7 +6,8 @@ namespace Item
     {
         protected float frequency = 0;
         protected float amplitude = 0;
-        public WeaponData data;
+        [SerializeField] public WeaponData data;
+        [SerializeField] public PlayerData playerData;
         public abstract void ItemTick();
         public abstract void Init();
 

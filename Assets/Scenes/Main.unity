@@ -274,6 +274,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2228447211159222224, guid: 3e3d6077fb4dffb4abb42b2edaeddb8e, type: 3}
+      propertyPath: orthographic size
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228447211159222224, guid: 3e3d6077fb4dffb4abb42b2edaeddb8e, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 55
       objectReference: {fileID: 0}

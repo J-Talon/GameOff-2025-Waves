@@ -1,11 +1,10 @@
-using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 public class MeshGenerator : MonoBehaviour
 {
-
+    public static MeshGenerator Instance;
     [SerializeField] Material material;
     [SerializeField] float xOrigin;
     [SerializeField] float yOrigin;
@@ -17,30 +16,43 @@ public class MeshGenerator : MonoBehaviour
     [SerializeField] int[] triangles;
     [SerializeField] Vector2[] uv;
 
+    private Mesh lineMesh;
+    private Vector3[] lineVertices;
+    public float graphOffset = 0f;
+
     Mesh mesh;
     MeshFilter filter;
     MeshRenderer renderer;
     bool running = false;
     [Header("EQ Parameters")]
-    [SerializeField] float samplingFreq, dBgain, Q, BW, S;
+    [SerializeField] float samplingFreq, dBgain, BW, S;
     [Range(0, 20000)]
     [SerializeField] float significantFreq;
     [SerializeField] float a0, a1, a2, b0, b1, b2;
 
+    float fMin = 20f;
+    float fMax = 20000f;
+    float[] bandFreqs = { 100, 2000, 5000, 10000, 20000 };
+    public float[] bandGains = new float[5];
+    public float Q = 1.0f;
     void Start()
     {
+        Instance = this;
         filter = GetComponent<MeshFilter>();
         renderer = GetComponent<MeshRenderer>();
-        CreateGrid();
-        CreateMesh();
-        ApplyBPF();
+
+        // Create the line mesh for the EQ curve
+        CreateLineMesh();
+
+        // Apply initial EQ values
+        ApplyFiveBandEQ();
     }
 
     // Update is called once per frame
     void Update()
     {
         //if (!running) StartCoroutine(AnimateMesh());
-        ApplyBPF();
+        ApplyFiveBandEQ();
         //UpdateMesh();
     }
     private void CreateMesh()
@@ -74,7 +86,8 @@ public class MeshGenerator : MonoBehaviour
         {
             for (int j = 0; j <= xSize; j++)
             {
-                vertices[i] = new Vector3(xOrigin + j * xScale, yOrigin + k * yScale, 0);
+                float y = yOrigin + (k - (ySize / 2f)) * yScale;
+                vertices[i] = new Vector3(xOrigin + j * xScale, y, 0);
                 i++;
             }
         }
@@ -94,173 +107,105 @@ public class MeshGenerator : MonoBehaviour
             vert++;
         }
     }
-    private IEnumerator AnimateMesh()
+    private void CreateLineMesh()
     {
-        running = true;
-        for (int i = 0; i < xSize; i++)
-        {
-            //vertices[i].y += 2 * yScale;
-            vertices[i + xSize + 1].y += 2 * yScale;
+        lineMesh = new Mesh();
+        lineVertices = new Vector3[xSize + 1];
 
-            yield return new WaitForSeconds(0.1f);
-            UpdateMesh();
-
-            //vertices[i].y -= 2 * yScale;
-            vertices[i + xSize + 1].y -= 2 * yScale;
-            yield return new WaitForSeconds(0.5f);
-            UpdateMesh();
-
-        }
-        running = false;
-    }
-
-    public void ApplyBPF()
-    {
-        float w0 = 2f * Mathf.PI * significantFreq / samplingFreq;
-        float cosw0 = Mathf.Cos(w0);
-        float sinw0 = Mathf.Sin(w0);
-        float cos2w0 = Mathf.Cos(2 * w0);
-        float sin2w0 = Mathf.Sin(2 * w0);
-
-        float A = Mathf.Pow(10, dBgain / 40);
-
-
-        float alpha = sinw0 / (2 * Q);
-
-        b0 = sinw0 / 2;
-        b1 = 0;
-        b2 = -sinw0 / 2;
-        a0 = 1 + alpha;
-        a1 = -2 * cosw0;
-        a2 = 1 - alpha;
-
+        // initial positions
         for (int i = 0; i <= xSize; i++)
         {
-            float freq = (i / (float)(xSize - 1)) * (samplingFreq / 2f);
-            float w = 2f * Mathf.PI * freq / samplingFreq;
-
-            float cosw = Mathf.Cos(w);
-            float sinw = Mathf.Sin(w);
-            float cos2w = Mathf.Cos(2f * w);
-            float sin2w = Mathf.Sin(2f * w);
-
-            float numRe = b0 + b1 * cosw + b2 * cos2w;
-            float numIm = -b1 * sinw - b2 * sin2w;
-
-            float denRe = 1f + a1 * cosw + a2 * cos2w;
-            float denIm = -a1 * sinw - a2 * sin2w;
-
-            float numMag = Mathf.Sqrt(numRe * numRe + numIm * numIm);
-            float denMag = Mathf.Sqrt(denRe * denRe + denIm * denIm);
-
-            float mag = numMag / Mathf.Max(1e-12f, denMag);
-            float dB = 20f * Mathf.Log10(Mathf.Max(1e-12f, mag));
-
-            vertices[i + xSize + 1].y = dB * yScale;
-            //vertices[i].y = 0.95f * dB;
+            float x = i * xScale;
+            lineVertices[i] = new Vector3(x, graphOffset, 0);
         }
-        UpdateMesh();
+
+        lineMesh.vertices = lineVertices;
+
+        // Create indices for line strip
+        int[] indices = new int[xSize + 1];
+        for (int i = 0; i <= xSize; i++)
+            indices[i] = i;
+
+        lineMesh.SetIndices(indices, MeshTopology.LineStrip, 0);
+
+        MeshFilter filter = GetComponent<MeshFilter>();
+        filter.mesh = lineMesh;
+
+        MeshRenderer renderer = GetComponent<MeshRenderer>();
+        renderer.material = material; // your unlit color material
     }
-    private void ApplyLPF()
+    struct Coeffs
     {
-        float w0 = 2f * Mathf.PI * significantFreq / samplingFreq;
+        public float b0, b1, b2, a1, a2;
+    }
+
+    private Coeffs ComputePeaking(float freq, float gainDB, float Q)
+    {
+        float w0 = 2f * Mathf.PI * freq / samplingFreq;
         float cosw0 = Mathf.Cos(w0);
         float sinw0 = Mathf.Sin(w0);
-        float cos2w0 = Mathf.Cos(2 * w0);
-        float sin2w0 = Mathf.Sin(2 * w0);
+        float A = Mathf.Pow(10f, gainDB / 40f);
+        float alpha = sinw0 / (2f * Q);
 
-        float A = Mathf.Pow(10, dBgain / 40);
+        float b0 = 1f + alpha * A;
+        float b1 = -2f * cosw0;
+        float b2 = 1f - alpha * A;
+        float a0 = 1f + alpha / A;
+        float a1 = -2f * cosw0;
+        float a2 = 1f - alpha / A;
 
+        b0 /= a0;
+        b1 /= a0;
+        b2 /= a0;
+        a1 /= a0;
+        a2 /= a0;
 
-        float alpha = sinw0 / (2 * Q);
-
-        b0 = (1 - cosw0) / 2;
-        b1 = 1 - cosw0;
-        b2 = (1 - cosw0) / 2;
-        a0 = 1 + alpha;
-        a1 = -2 * cosw0;
-        a2 = 1 - alpha;
-
-        for (int i = 0; i <= xSize; i++)
-        {
-            float freq = (i / (float)(xSize - 1)) * (samplingFreq / 2f);
-            float w = 2f * Mathf.PI * freq / samplingFreq;
-
-            float cosw = Mathf.Cos(w);
-            float sinw = Mathf.Sin(w);
-            float cos2w = Mathf.Cos(2f * w);
-            float sin2w = Mathf.Sin(2f * w);
-
-            float numRe = b0 + b1 * cosw + b2 * cos2w;
-            float numIm = -b1 * sinw - b2 * sin2w;
-
-            float denRe = 1f + a1 * cosw + a2 * cos2w;
-            float denIm = -a1 * sinw - a2 * sin2w;
-
-            float numMag = Mathf.Sqrt(numRe * numRe + numIm * numIm);
-            float denMag = Mathf.Sqrt(denRe * denRe + denIm * denIm);
-
-            float mag = numMag / Mathf.Max(1e-12f, denMag);
-            float dB = 20f * Mathf.Log10(Mathf.Max(1e-12f, mag));
-
-            vertices[i + xSize + 1].y = dB * yScale * A;
-
-        }
-        UpdateMesh();
+        return new Coeffs { b0 = b0, b1 = b1, b2 = b2, a1 = a1, a2 = a2 };
     }
-    private void ApplyHPF()
+    private float MagnitudeAtFreq(Coeffs c, float w)
     {
-        float w0 = 2f * Mathf.PI * significantFreq / samplingFreq;
-        float cosw0 = Mathf.Cos(w0);
-        float sinw0 = Mathf.Sin(w0);
-        float cos2w0 = Mathf.Cos(2 * w0);
-        float sin2w0 = Mathf.Sin(2 * w0);
+        float cosw = Mathf.Cos(w);
+        float sinw = Mathf.Sin(w);
+        float cos2w = Mathf.Cos(2f * w);
+        float sin2w = Mathf.Sin(2f * w);
 
-        float A = Mathf.Pow(10, dBgain / 40);
+        float numRe = c.b0 + c.b1 * cosw + c.b2 * cos2w;
+        float numIm = -c.b1 * sinw - c.b2 * sin2w;
 
+        float denRe = 1f + c.a1 * cosw + c.a2 * cos2w;
+        float denIm = -c.a1 * sinw - c.a2 * sin2w;
 
-        float alpha = sinw0 / (2 * Q);
+        float numMag = Mathf.Sqrt(numRe * numRe + numIm * numIm);
+        float denMag = Mathf.Sqrt(denRe * denRe + denIm * denIm);
 
-        b0 = (1 + cosw0) / 2;
-        b1 = -1 - cosw0;
-        b2 = (1 + cosw0) / 2;
-        a0 = 1 + alpha;
-        a1 = -2 * cosw0;
-        a2 = 1 - alpha;
+        return numMag / Mathf.Max(1e-12f, denMag);
+    }
 
+    public void ApplyFiveBandEQ()
+    {
+        // 1. Precompute coefficients for 5 bands
+        Coeffs[] coeffs = new Coeffs[5];
+        for (int b = 0; b < 5; b++)
+            coeffs[b] = ComputePeaking(bandFreqs[b], bandGains[b], Q);
+
+        // 2. Sweep across X samples
         for (int i = 0; i <= xSize; i++)
         {
-            float freq = (i / (float)(xSize - 1)) * (samplingFreq / 2f);
+            float freq = (i / (float)xSize) * (samplingFreq / 2f);
             float w = 2f * Mathf.PI * freq / samplingFreq;
 
-            float cosw = Mathf.Cos(w);
-            float sinw = Mathf.Sin(w);
-            float cos2w = Mathf.Cos(2f * w);
-            float sin2w = Mathf.Sin(2f * w);
+            float totalMag = 1f;
 
-            float numRe = b0 + b1 * cosw + b2 * cos2w;
-            float numIm = -b1 * sinw - b2 * sin2w;
+            for (int b = 0; b < 5; b++)
+                totalMag *= MagnitudeAtFreq(coeffs[b], w);
 
-            float denRe = 1f + a1 * cosw + a2 * cos2w;
-            float denIm = -a1 * sinw - a2 * sin2w;
+            // Convert to dB — negative allowed
+            float dB = 20f * Mathf.Log10(Mathf.Max(1e-12f, totalMag));
 
-            float numMag = Mathf.Sqrt(numRe * numRe + numIm * numIm);
-            float denMag = Mathf.Sqrt(denRe * denRe + denIm * denIm);
-
-            float mag = numMag / Mathf.Max(1e-12f, denMag);
-            float dB = 20f * Mathf.Log10(Mathf.Max(1e-12f, mag));
-
-            vertices[i + xSize + 1].y = dB * yScale * A;
-
+            lineVertices[i].y = dB * yScale + graphOffset;
         }
-        UpdateMesh();
+
+        lineMesh.vertices = lineVertices;
+        lineMesh.RecalculateBounds();
     }
-    /*
-        private void OnDrawGizmos()
-        {
-            for (int i = 0; i < vertices.Length; i++)
-            {
-                Gizmos.DrawSphere(vertices[i], 0.1f);
-            }
-        }*/
 }

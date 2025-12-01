@@ -60,8 +60,8 @@ public class Main : MonoBehaviour
         yield return null;
         yield return null;
         yield return StartCoroutine(gameplay.LoadScenes());
-        gameData.InitializeNewData();
         yield return null;
+        yield return StartCoroutine(gameData.InitializeNewData());
         yield return null;
         yield return null;
         yield return null;

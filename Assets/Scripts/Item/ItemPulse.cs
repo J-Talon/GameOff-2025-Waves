@@ -59,6 +59,7 @@ namespace Item
             inAnimation = true;
             lastAttackTime = base.GetTimeMillis();
             behaviour = ParticleFactory.PlayParticle("ParticleRing", transform.position);
+
         }
 
         public override void ItemTick()
@@ -66,17 +67,19 @@ namespace Item
             float time = base.GetTimeMillis();
             float attackAnimationTime = time - lastAttackTime;
 
-
             if (inAnimation)
             {
                 Animate(attackAnimationTime);
                 return;
             }
-
             if (attackAnimationTime < data.attackPeriod)
                 return;
 
-            Attack();
+            if (data.damageMultiplier > 1 & playerData.currentEnergy > 10)
+            {
+                DecreaseEnergy();
+                Attack();
+            }
 
         }
 
@@ -94,7 +97,10 @@ namespace Item
             entity.takeDamage(data.baseDamage, 1);
         }
 
-
+        public void DecreaseEnergy()
+        {
+            EqualizerManager.RaiseEnergyChange(playerData, data.currentEnergyCost);
+        }
         public void OnDrawGizmos()
         {
             Gizmos.DrawWireSphere(gameObject.transform.position, data.maxRange);
