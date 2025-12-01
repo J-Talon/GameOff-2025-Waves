@@ -4,12 +4,12 @@ using UnityEngine.SceneManagement;
 public class EnemySpawner : MonoBehaviour
 {
     private float spawnTimer = 0;
-    private float spawnInterval = 2;
+    private float spawnInterval = 1f;
 
     private Transform player;
     private EnemyManager manager;
 
-    private int mobCap = 3;
+    private int mobCap = 200;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,31 +19,76 @@ public class EnemySpawner : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        if (manager.data.timerValue < 2) // Give player a few seconds of peace
+        {
+            return;
+        }
         if (SceneManager.GetActiveScene().name == "Temporary")
         {
             spawnTimer += Time.deltaTime;
             if ((spawnTimer >= spawnInterval) && (manager.enemyList.Count <= mobCap))
             {
+                if (0 < manager.data.timerValue &&  manager.data.timerValue < 15)
+                {
+                    SpawnWaveOne();
+                }
+                if (15 < manager.data.timerValue && manager.data.timerValue < 45)
+                {
+                    SpawnWaveTwo();
+                }
+                if (manager.data.timerValue < 45 && manager.data.timerValue < 60)
+                {
+                    SpawnWaveThree();
+                }
                 spawnTimer = 0;
-                SpawnEnemy();
             }
         }
     }
 
-    private void SpawnEnemy()
+    // 0-15 seconds long, spawns goblins which should be one shot by first attack
+    private void SpawnWaveOne()
     {
-        Enemy temp = EntityFactory.createZombie();
+        Enemy temp = EntityFactory.createGoblin(0.5f);
         temp.transform.position = GetRandomPosition();
         manager.enemyList.Add(temp);
+    }
+
+    private void SpawnWaveTwo()
+    {
+        for (int i = 0; i < 1; i++)
+        {
+            Enemy temp = EntityFactory.createDog(0.5f);
+            temp.transform.position = GetRandomPosition();
+            manager.enemyList.Add(temp);
+        }
+    }
+
+    private void SpawnWaveThree()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            Enemy temp = EntityFactory.createGoblin(2);
+            temp.transform.position = GetRandomPosition();
+            manager.enemyList.Add(temp);
+        }
+    }
+
+    private void SpawnWaveFour()
+    {
+
+    }
+
+    private void SpawnWaveFive()
+    {
 
     }
 
     private Vector2 GetRandomPosition()
     {
         //Vector2 vpr = new Vector2(Screen.width, Screen.height) * Random.Range(1.1f, 1.4f); // Define viewport, (distance could use tweaking)
-        Vector2 vpr = new Vector2(20, 10) * Random.Range(1.1f, 1.4f);
+        Vector2 vpr = new Vector2(24, 20) * Random.Range(1.1f, 1.4f);
         // Get values of corners
         Vector2 topLeft = new Vector2(player.position.x - vpr.x / 2, player.position.y - vpr.y / 2);
         Vector2 topRight = new Vector2(player.position.x + vpr.x / 2, player.position.y - vpr.y / 2);

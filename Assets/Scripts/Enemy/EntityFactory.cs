@@ -5,21 +5,21 @@ static class EntityFactory
     private static Enemy enemy = Resources.Load<Enemy>("Prefab/Enemy");
     private static Projectile projectile = Resources.Load<Projectile>("Prefab/EnemyProjectile");
     
-    public static Enemy createZombie()
+    public static Enemy createGoblin(float strengthMod = 1)
     {
-        Enemy zombie = Object.Instantiate(enemy);
-        zombie.init(5, 5, 5, 5, 5);
-        zombie.AddBehaviour(new MeleeMovement());
-        return zombie;
+        Enemy goblin = Object.Instantiate(enemy);
+        goblin.init(hp: 10 * strengthMod, atk: 0 * strengthMod, move: 4, freq: 5, atkRate: 5);
+        goblin.AddBehaviour(new MeleeMovement());
+        return goblin;
     }
 
-    public static Enemy createArcher()
+    public static Enemy createDog(float strengthMod = 1)
     {
-        Enemy archer = Object.Instantiate(enemy);
-        archer.init(100, 5, 5, 5, 5);
-        archer.AddBehaviour(new RangedMovement());
-        archer.AddBehaviour(new RangedAttack());
-        return archer;
+        Enemy dog = Object.Instantiate(enemy);
+        dog.init(hp: 10 * strengthMod, atk: 5 * strengthMod, move: 3, freq: 5, atkRate: 5);
+        dog.AddBehaviour(new RangedMovement());
+        dog.AddBehaviour(new RangedAttack());
+        return dog;
     }
 
     public static Projectile createStraightShot()

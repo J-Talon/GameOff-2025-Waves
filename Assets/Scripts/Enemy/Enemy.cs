@@ -44,7 +44,7 @@ public class Enemy : GameEntity
         }
         player.damage(attackDmg);
         circleCollider.enabled = false;
-        SetInvincibility(0.1f);
+        SetInvincibility(0.3f);
     }
 
     public void SetInvincibility(float time)

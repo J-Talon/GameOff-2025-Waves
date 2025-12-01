@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour, IManager, IDataUser
 {
     public List<Enemy> enemyList;
-    private GameData data;
+    public GameData data;
     private Transform player;
 
     public void Start()

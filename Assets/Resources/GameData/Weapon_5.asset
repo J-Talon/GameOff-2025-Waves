@@ -18,7 +18,7 @@ MonoBehaviour:
   baseDamage: 1000
   currentDamage: 0
   damageMultiplier: 0
-  baseEnergyCost: 100
+  baseEnergyCost: 750
   currentEnergyCost: 0
   energyMultiplier: 0
   id: 0
