@@ -91,7 +91,7 @@ namespace Item
             if (entity == null)
                 return;
 
-            //Debug.Log("damage: "+other.name);
+            Debug.Log("damage: " + other.name);
 
             //you'd probably do the damage calculations here, or in the entity depending on what's easier
             entity.takeDamage(data.baseDamage, 1);

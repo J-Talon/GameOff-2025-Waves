@@ -16,8 +16,8 @@ MonoBehaviour:
   expansionSpeed: 500
   maxRange: 5
   baseDamage: 10
-  currentDamage: 0
-  damageMultiplier: 0
+  currentDamage: 91.75812
+  damageMultiplier: 9.175812
   baseEnergyCost: 1
   currentEnergyCost: 0
   energyMultiplier: 0

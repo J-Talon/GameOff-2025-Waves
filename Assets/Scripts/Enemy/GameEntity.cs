@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public abstract class GameEntity : MonoBehaviour
@@ -28,6 +27,7 @@ public abstract class GameEntity : MonoBehaviour
         health -= dmg;
         if (health < 0)
         {
+            ScoreManager.Instance.InvokeScoreEvent(100);
             Destroy(gameObject);
         }
     }
