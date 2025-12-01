@@ -40,6 +40,10 @@ public class ScoreManager : MonoBehaviour, IManager, IDataUser
     {
         data.score += changeAmount;
     }
+    public void InvokeScoreEvent(float changeAmount)
+    {
+        OnScoreChange?.Invoke(playerData, changeAmount);
+    }
     void OnDestroy()
     {
         Main.Instance.RemoveManager(this);

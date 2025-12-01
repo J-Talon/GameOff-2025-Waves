@@ -10,6 +10,9 @@ public class GameData : MonoBehaviour
     [SerializeField] public PlayerData playerData;
     [SerializeField] public int weaponCount = 5;
     [SerializeField] public List<WeaponData> weapons = new List<WeaponData>();
+    private List<WeaponData> weaponTemplates = new List<WeaponData>();
+    private PlayerData playerTemplate;
+
     private void OnValidate()
     {
         weapons = Resources.LoadAll<WeaponData>("GameData").ToList();
@@ -19,16 +22,31 @@ public class GameData : MonoBehaviour
     {
         Main.Instance.SetGameData(this);
     }
+    private void Start()
+    {
+    }
+    public void CloneDataFromScriptableObjects()
+    {
+        playerTemplate = Resources.Load<PlayerData>("GameData/PlayerData");
+        weaponTemplates = Resources.LoadAll<WeaponData>("GameData").ToList();
+    }
     public IEnumerator InitializeNewData()
     {
-        playerData = Resources.Load<PlayerData>("GameData/PlayerData");
+        var originalPlayerData = Resources.Load<PlayerData>("GameData/PlayerData");
+        playerData = ScriptableObject.Instantiate(originalPlayerData);
         yield return null;
-        if (weapons.Count > 0)
+
+        var weaponTemplates = Resources.LoadAll<WeaponData>("GameData");
+        yield return null;
+
+        weapons.Clear();
+
+        foreach (var template in weaponTemplates)
         {
-            weapons.Clear();
+            weapons.Add(ScriptableObject.Instantiate(template));
+            yield return null;
         }
-        weapons = Resources.LoadAll<WeaponData>("GameData").ToList();
-        yield return null;
+
         while (weapons.Count < weaponCount)
         {
             weapons.Add(ScriptableObject.CreateInstance<WeaponData>());
