@@ -7,7 +7,7 @@ static class EntityFactory
     private static Powerup powerup = Resources.Load<Powerup>("Prefab/Powerup");
 
     private static RuntimeAnimatorController goblinAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Goblin/AnimGoblin");
-    private static RuntimeAnimatorController demonDogAnimation;
+    private static RuntimeAnimatorController demonDogAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Dog/Dog");
     
     
     public static Enemy createGoblin(float strengthMod = 1)
@@ -28,6 +28,9 @@ static class EntityFactory
         Enemy dog = Object.Instantiate(enemy);
         dog.init(hp: 10 * strengthMod, atk: 5 * strengthMod, move: 3, freq: 5, atkRate: 5);
         dog.points = (int)(15 * strengthMod);
+        
+        Animator controller = enemy.gameObject.AddComponent<Animator>();
+        controller.runtimeAnimatorController =  goblinAnimation;
         dog.AddBehaviour(new RangedMovement());
         dog.AddBehaviour(new RangedAttack());
         return dog;

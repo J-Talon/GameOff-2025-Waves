@@ -9,7 +9,7 @@ namespace Item
         [SerializeField] public WeaponData data;
         [SerializeField] public PlayerData playerData;
         public abstract void ItemTick();
-        public abstract void Init();
+        public abstract void Init(Player player);
 
         public virtual float GetTimeMillis()
         {

@@ -1,4 +1,5 @@
 using Effect;
+using Effect.Behaviour;
 using UnityEngine;
 
 namespace Item
@@ -16,14 +17,16 @@ namespace Item
         private float range;
 
         private ParticleBehaviour behaviour = null;
-
-        public override void Init()
+        private Player player;
+        
+        public override void Init(Player p)
         {
             lastAttackTime = 0;
             coll = gameObject.GetComponent<CircleCollider2D>();
             coll.isTrigger = true;
             inAnimation = false;
             coll.radius = 0;
+            player = p;
         }
 
         private void Animate(float time)
@@ -37,7 +40,8 @@ namespace Item
 
                 if (behaviour != null)
                     coll.enabled = false;
-                    behaviour.Complete();
+                
+                behaviour.Complete();
                 return;
             }
 
@@ -61,6 +65,14 @@ namespace Item
             inAnimation = true;
             lastAttackTime = base.GetTimeMillis();
             behaviour = ParticleFactory.PlayParticle("ParticleRing", transform.position);
+
+            if (player)
+            {
+                Animator anim = player.GetComponent<Animator>();
+                anim.SetTrigger(EntityAnimatorState.ATTACK.value);
+                player.GetHairRendererer().SetTrigger(EntityAnimatorState.ATTACK.value);
+            }
+
 
         }
 
