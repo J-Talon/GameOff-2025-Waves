@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public abstract class GameEntity : MonoBehaviour
 {
@@ -20,14 +20,5 @@ public abstract class GameEntity : MonoBehaviour
         moveSpeed = move;
         targetFrequency = freq;
         attackRate = atkRate;
-    }
-
-    public void takeDamage(float dmg, float atkFrequency)
-    {
-        health -= dmg - Math.Abs(targetFrequency - atkFrequency);
-        if (health < 0)
-        {
-            Destroy(gameObject);
-        }
     }
 }

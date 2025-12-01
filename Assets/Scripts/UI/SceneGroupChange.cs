@@ -7,14 +7,14 @@ public class SceneGroupChange : MonoBehaviour
     }
     public void OnStartGame()
     {
-        Main.Instance.LoadGameplay();
+        StartCoroutine(Main.Instance.LoadGameplay());
     }
     public void OnEndGame()
     {
-        Main.Instance.LoadGameover();
+        StartCoroutine(Main.Instance.LoadGameover());
     }
     public void OnReturnToMainMenu()
     {
-        Main.Instance.LoadMainMenu();
+        StartCoroutine(Main.Instance.LoadMainMenu());
     }
 }

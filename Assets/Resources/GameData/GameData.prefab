@@ -44,3 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06574c6103eaf5a4ba1ba6ad50b2e45f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerData: {fileID: 0}
+  weaponCount: 5
+  weapons:
+  - {fileID: 11400000, guid: 76fce92639c49ca46b3e9e90b9737591, type: 2}
+  - {fileID: 11400000, guid: 96c4493d7dc067843b094a10b444f030, type: 2}
+  - {fileID: 11400000, guid: 9c484ccf6b8db474b92718a2efa9e8f7, type: 2}
+  - {fileID: 11400000, guid: 22a18b62d26ef13448e9046c9c0c3421, type: 2}
+  - {fileID: 11400000, guid: 62697024a814ba247a6aa73e036c6045, type: 2}

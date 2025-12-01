@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Main : MonoBehaviour
@@ -17,12 +19,16 @@ public class Main : MonoBehaviour
     List<IManager> managers = new List<IManager>();
 
     public static Main Instance;
+    // public Player player;
 
-    private SceneHelper persistent;
-    private SceneHelper mainmenu;
-    private SceneHelper gameplay;
-    private SceneHelper gameover;
-    private SceneHelper current;
+    [SerializeField] private GameData gameData;
+    [SerializeField] private SceneHelper persistent;
+    [SerializeField] private SceneHelper mainmenu;
+    [SerializeField] private SceneHelper gameplay;
+    [SerializeField] private SceneHelper gameover;
+    [SerializeField] private SceneHelper current;
+    [SerializeField] private SceneHelper previous;
+    [SerializeField] int managerCount = 0;
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -35,47 +41,75 @@ public class Main : MonoBehaviour
         gameplay = new SceneHelper(gameplayScenes);
         gameover = new SceneHelper(gameoverScenes);
         current = new SceneHelper();
+        previous = new SceneHelper();
         StartCoroutine(persistent.LoadScenes());
-        LoadMainMenu();
+        StartCoroutine(LoadMainMenu());
     }
 
-    public void LoadMainMenu()
+    public IEnumerator LoadMainMenu()
     {
-        if (current.GetSceneCount() > 0) StartCoroutine(current.UnloadScenes());
-        StartCoroutine(mainmenu.LoadScenes());
+        yield return StartCoroutine(mainmenu.LoadScenes());
+        yield return null;
+        previous.SetScenes(current.GetScenes());
         current.SetScenes(mainmenuScenes);
+        if (previous.GetSceneCount() > 0) yield return StartCoroutine(previous.UnloadScenes());
     }
-    public void LoadGameplay()
+    public IEnumerator LoadGameplay()
     {
-        if (current.GetSceneCount() > 0) StartCoroutine(current.UnloadScenes());
-        StartCoroutine(gameplay.LoadScenes());
+        yield return null;
+        yield return null;
+        yield return null;
+        yield return StartCoroutine(gameplay.LoadScenes());
+        yield return null;
+        yield return StartCoroutine(gameData.InitializeNewData());
+        yield return null;
+        yield return null;
+        yield return null;
+        yield return null;
+        ProvideDataToManagers();
+        previous.SetScenes(current.GetScenes());
         current.SetScenes(gameplayScenes);
+        if (previous.GetSceneCount() > 0) yield return StartCoroutine(previous.UnloadScenes());
     }
-    public void LoadGameover()
+    public IEnumerator LoadGameover()
     {
-        if (current.GetSceneCount() > 0) StartCoroutine(current.UnloadScenes());
-        StartCoroutine(gameover.LoadScenes());
+        yield return StartCoroutine(gameover.LoadScenes());
+        yield return null;
+        previous.SetScenes(current.GetScenes());
         current.SetScenes(gameoverScenes);
+        if (previous.GetSceneCount() > 0) yield return StartCoroutine(previous.UnloadScenes());
     }
-
     public void AddManager(IManager manager)
     {
         managers.Add(manager);
+        managerCount++;
         Debug.Log($"Added {manager}...");
     }
     public void RemoveManager(IManager manager)
     {
         managers.Remove(manager);
+        managerCount--;
         Debug.Log($"Removed {manager}...");
     }
-    void OnDestroy()
+    void ProvideDataToManager(IDataUser user)
     {
-
+        user.SetData(gameData);
+    }
+    public void ProvideDataToManagers()
+    {
+        foreach (var user in managers.OfType<IDataUser>())
+        {
+            user.SetData(gameData);
+        }
+    }
+    public void SetGameData(GameData data)
+    {
+        gameData = data;
     }
 }
 public interface IWorker
 {
-    void Initialize(IManager manager);  //Give worker a reference to relevant manager to subscribe callbacks to manager events
+    void Initialize();
 }
 public interface IManager
 {
