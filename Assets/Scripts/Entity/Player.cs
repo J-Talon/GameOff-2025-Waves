@@ -44,6 +44,7 @@ public class Player : MonoBehaviour, IManager, IDataUser
             GameObject itemInstance = Instantiate(itemPulse);
             GameItem item = itemInstance.GetComponent<ItemPulse>();
             item.data = this.data.weapons[i];
+            item.playerData = data.playerData;
             AddItem(item);
         }
     }

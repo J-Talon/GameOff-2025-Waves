@@ -13,7 +13,7 @@ public class ScoreTextUpdater : MonoBehaviour, IWorker
     }
     public void Initialize()
     {
-        ScoreManager.OnScoreChange += UpdateBar;
+        ScoreManager.Instance.OnScoreChange += UpdateBar;
         scoreText.text = $"Score: ----";
     }
     private void UpdateBar(PlayerData data, float amount)
