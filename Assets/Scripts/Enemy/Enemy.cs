@@ -20,23 +20,34 @@ public class Enemy : GameEntity
     }
     public void tick(Vector3 playerPosition)
     {
-        attackTimer += Time.deltaTime;
         foreach (IBehaviour behaviour in behaviours)
         {
             behaviour.tick(playerPosition);
         }
     }
-
-    public void OnTriggerEnter2D(Collider2D collision)
+    public void OnTriggerStay2D(Collider2D other)
     {
-        if (collision.gameObject.tag == "Player") // Temporarily using Player as collider
+        GameObject hit = other.gameObject;
+        Player player = hit.GetComponent<Player>();
+        if (player == null)
         {
-            takeDamage(5f, 5f);
+            return;
         }
-        /*Projectile temp = collision.GetComponent<Projectile>(); // WILL CHANGE TO A PROJECTILE CLASS ONCE PROJECTILES ARE CREATED
-        if (temp)
+        attackTimer += Time.deltaTime;
+        if (attackTimer > attackRate) {
+            player.damage(attackDmg);
+            attackTimer = 0;
+        }
+    }
+
+    public void OnTriggerEnter2D(Collider2D other)
+    {
+        GameObject hit = other.gameObject;
+        Player player = hit.GetComponent<Player>();
+        if (player == null)
         {
-            damage(temp.attackDmg);
-        }*/
+            return;
+        }
+        attackTimer = attackRate;
     }
 }

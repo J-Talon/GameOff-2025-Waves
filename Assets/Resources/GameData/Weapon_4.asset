@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: Weapon_4
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  attackPeriod: 5000
+  attackPeriod: 100
   expansionSpeed: 500
-  maxRange: 20
+  maxRange: 1
   baseDamage: 500
   currentDamage: 0
   damageMultiplier: 0
   baseEnergyCost: 50
   currentEnergyCost: 0
   energyMultiplier: 0
+  id: 0

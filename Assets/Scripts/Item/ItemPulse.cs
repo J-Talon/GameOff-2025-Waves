@@ -36,6 +36,7 @@ namespace Item
                 coll.radius = range;
 
                 if (behaviour != null)
+                    coll.enabled = false;
                     behaviour.Complete();
                 return;
             }
@@ -56,6 +57,7 @@ namespace Item
             if (inAnimation)
                 return;
 
+            coll.enabled = true;
             inAnimation = true;
             lastAttackTime = base.GetTimeMillis();
             behaviour = ParticleFactory.PlayParticle("ParticleRing", transform.position);
