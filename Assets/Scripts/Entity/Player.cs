@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Effect;
+using Effect.Behaviour;
 using EventSystem;
 using Item;
+using UnityEditor.Experimental;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,6 +22,12 @@ public class Player : MonoBehaviour, IManager, IDataUser
     private GameObject itemPulse;
     private Camera cam;
 
+    private Animator anim;
+    private GameObject hairRenderer;
+    private Animator hairAnim;
+    
+    private int dir = 1;
+
     public void Start()
     {
         Instance = this;
@@ -29,6 +38,15 @@ public class Player : MonoBehaviour, IManager, IDataUser
         inputMovement = Vector2.zero;
         Subscribe();
         cam = Camera.main;
+
+        hairRenderer = transform.GetChild(0).gameObject;
+        hairAnim = hairRenderer.GetComponent<Animator>();
+        
+        if (cam == null)
+            throw new NullReferenceException("Cam not found");
+
+        anim = gameObject.GetComponent<Animator>();
+        
 
         itemPulse = Resources.Load<GameObject>("Prefab/ItemPulseAttack");
         ParticleFactory.LoadResources();
@@ -54,9 +72,15 @@ public class Player : MonoBehaviour, IManager, IDataUser
     {
         item.gameObject.transform.parent = gameObject.transform;
         item.transform.localPosition = Vector3.zero;
-        item.Init();
+        item.Init(this);
         items.Add(item);
     }
+
+    public Animator GetHairRendererer()
+    {
+        return hairAnim;
+    }
+
     public void GainEnergy(float amount)
     {
         data.playerData.currentEnergy += amount;
@@ -76,11 +100,30 @@ public class Player : MonoBehaviour, IManager, IDataUser
 
         if (impulse.sqrMagnitude < 0.01f)
             impulse = Vector2.zero;
+
+
+        Vector2 linVel = Vector2.zero;
         if (data != null)
         {
-            rigidBody.linearVelocity = (inputMovement * data.playerData.moveSpeed) + impulse;
+            linVel = (inputMovement * data.playerData.moveSpeed) + impulse;
+            rigidBody.linearVelocity = linVel;
             impulse *= (1 - data.playerData.frictionCoeff);
         }
+        
+
+        float coarseMoveMagSqd = (inputMovement.x * inputMovement.x) + (inputMovement.y * inputMovement.y);
+        
+
+        /////testing code
+        // float moveSpeed = 5;
+        // float frictionCoeff = 0.25f;
+        // rigidBody.linearVelocity = (inputMovement * moveSpeed) + impulse;
+        // impulse *= (1 - frictionCoeff);
+        // ////////
+        
+        
+        
+        
         //todo: consider concurrent modification exceptions
         if (SceneManager.GetActiveScene().name == "Temporary")
         {
@@ -91,6 +134,43 @@ public class Player : MonoBehaviour, IManager, IDataUser
         }
 
         GainEnergy(1);
+        
+        //idle animations technically aren't in here yet 
+        //attack anims are in items
+        if (coarseMoveMagSqd > 0)
+        {
+            anim.SetBool(EntityAnimatorState.WALK.value, true);
+            hairAnim.SetBool(EntityAnimatorState.WALK.value, true);
+        }
+        else
+        {
+            anim.SetBool(EntityAnimatorState.WALK.value, false);
+            hairAnim.SetBool(EntityAnimatorState.WALK.value, false);
+        }
+        
+        
+        
+
+        int facingDir = inputMovement.x > 0 ? 1 : (inputMovement.x < 0 ? -1 : 0);
+        if (facingDir == 0)
+            return;
+
+
+        Vector2 scale = gameObject.transform.localScale;
+        if (dir > 0 && facingDir < 0)
+        {
+            dir = -1;
+            scale.x *= -1;
+        }
+        else if (dir < 0 && facingDir > 0)
+        {
+            dir = 1;
+            scale.x *= -1;
+        }
+
+        transform.localScale = scale;
+
+
     }
 
     //if you need to apply knockback to the player

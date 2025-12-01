@@ -3,11 +3,9 @@ using UnityEngine;
 
 public class MeleeMovement : IBehaviour
 {
-    private Enemy enemy;
+    
     private int facingDir = -1;
     private Animator animator;
-    
-
     private GameEntity enemy;
     
     public void Register(GameEntity enemy)

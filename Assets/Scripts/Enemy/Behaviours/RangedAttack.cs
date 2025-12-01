@@ -5,15 +5,19 @@ public class RangedAttack : IBehaviour
 {
     private GameEntity enemy;
     private ProjectileManager projectileManager;
+    private Animator anim;
     public void Register(GameEntity enemy)
     {
         this.enemy = enemy;
         projectileManager = GameObject.FindWithTag("GameController").GetComponent<ProjectileManager>();
+        anim = enemy.GetComponent<Animator>();
+        
     }
 
     public void DeRegister(GameEntity enemy)
     {
         this.enemy = null;
+        anim = null;
     }
     
     
@@ -32,8 +36,8 @@ public class RangedAttack : IBehaviour
                 projectileManager.projectileList.Add(temp);
 
 
-                Animator anim = enemy.GetComponent<Animator>();
-                anim.SetTrigger(EntityAnimatorState.ATTACK.value);
+                if (anim)
+                    anim.SetTrigger(EntityAnimatorState.ATTACK.value);
                 
                 enemy.attackTimer = 0;
             }
