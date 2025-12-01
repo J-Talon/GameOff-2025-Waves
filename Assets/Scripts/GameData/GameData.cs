@@ -25,11 +25,6 @@ public class GameData : MonoBehaviour
     private void Start()
     {
     }
-    public void CloneDataFromScriptableObjects()
-    {
-        playerTemplate = Resources.Load<PlayerData>("GameData/PlayerData");
-        weaponTemplates = Resources.LoadAll<WeaponData>("GameData").ToList();
-    }
     public IEnumerator InitializeNewData()
     {
         var originalPlayerData = Resources.Load<PlayerData>("GameData/PlayerData");

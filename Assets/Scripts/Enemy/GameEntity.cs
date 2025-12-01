@@ -27,6 +27,7 @@ public abstract class GameEntity : MonoBehaviour
         health -= dmg;
         if (health < 0)
         {
+            Player.Instance.GainEnergy(100);
             ScoreManager.Instance.InvokeScoreEvent(100);
             Destroy(gameObject);
         }

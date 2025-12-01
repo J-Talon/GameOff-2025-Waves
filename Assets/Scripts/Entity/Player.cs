@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour, IManager, IDataUser
 {
+    public static Player Instance;
     private Vector2 inputMovement;
     private Vector2 impulse;
 
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour, IManager, IDataUser
 
     public void Start()
     {
+        Instance = this;
         Main.Instance.AddManager(this);
         items = new List<GameItem>();
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
@@ -54,6 +56,14 @@ public class Player : MonoBehaviour, IManager, IDataUser
         item.transform.localPosition = Vector3.zero;
         item.Init();
         items.Add(item);
+    }
+    public void GainEnergy(float amount)
+    {
+        data.playerData.currentEnergy += amount;
+    }
+    public void GainHealth(float amount)
+    {
+        data.playerData.currentHealth += amount;
     }
     public void FixedUpdate()
     {
@@ -106,6 +116,7 @@ public class Player : MonoBehaviour, IManager, IDataUser
         if (next <= 0)
         {
             die();
+            Main.Instance.LoadGameover();
         }
 
         this.data.playerData.currentHealth = next;

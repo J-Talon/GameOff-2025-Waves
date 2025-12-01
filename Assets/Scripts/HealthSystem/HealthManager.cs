@@ -7,10 +7,11 @@ public class HealthManager : MonoBehaviour, IManager, IDataUser
     public static HealthManager Instance;
     [SerializeField]
     PlayerData playerData;
-
+    private float survivalTime;
     private List<IWorker> workers = new List<IWorker>();
 
     public static event Action<PlayerData, float> OnHealthChange;
+    public static event Action<PlayerData, float> OnTimerChange;
     private void OnEnable()
     {
         Instance = this;
@@ -19,6 +20,11 @@ public class HealthManager : MonoBehaviour, IManager, IDataUser
     {
         Main.Instance.AddManager(Instance);
         OnHealthChange += UpdateHealthData;
+    }
+    public void Update()
+    {
+        survivalTime += Time.deltaTime;
+        OnTimerChange?.Invoke(playerData, survivalTime);
     }
     public void Register(IWorker worker)
     {
@@ -38,6 +44,10 @@ public class HealthManager : MonoBehaviour, IManager, IDataUser
     public void UpdateHealthData(PlayerData data, float changeAmount)
     {
         data.currentHealth = Mathf.Clamp(data.currentHealth + changeAmount, 0f, data.maxHealth);
+    }
+    public void UpdateSurviveTimer(PlayerData data, float changeAmount)
+    {
+
     }
     public void InvokeHealthEvent(float changeAmount)
     {
