@@ -1,3 +1,4 @@
+using Effect.Behaviour;
 using UnityEngine;
 
 public class RangedAttack : IBehaviour
@@ -17,13 +18,19 @@ public class RangedAttack : IBehaviour
     public void tick(Vector3 playerPosition)
     {
         Vector3 direction = playerPosition - enemy.transform.position;
-        if (direction.magnitude < 4)
-        {
-            if (enemy.attackTimer > enemy.attackRate)
-            {
-                projectileManager.straightShot(enemy);
-                enemy.attackTimer = 0;
-            }
-        }
+        if (direction.magnitude >= 4)
+            return;
+
+        if (enemy.attackTimer <= enemy.attackRate)
+            return;
+        
+        
+        projectileManager.straightShot(enemy);
+        enemy.attackTimer = 0;
+        
+        Animator anim = enemy.GetComponent<Animator>();
+        anim.SetTrigger(EntityAnimatorState.ATTACK.value);
+
+
     }
 }

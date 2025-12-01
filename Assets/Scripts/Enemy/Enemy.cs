@@ -6,6 +6,13 @@ public class Enemy : GameEntity
 {
     private List<IBehaviour> behaviours = new List<IBehaviour>();
 
+
+    private void Start()
+    {
+        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+        rb.freezeRotation = true;
+    }
+
     public void AddBehaviour(IBehaviour behaviour)
     {
         behaviours.Add(behaviour);
@@ -30,6 +37,10 @@ public class Enemy : GameEntity
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
+        
+        //I presume that this is not the attack state...?
+        0
+        
         if (collision.gameObject.tag == "Player") // Temporarily using Player as collider
         {
             takeDamage(5f, 5f);
