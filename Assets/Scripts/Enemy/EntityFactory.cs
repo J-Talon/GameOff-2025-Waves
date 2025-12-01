@@ -5,6 +5,10 @@ static class EntityFactory
     private static Enemy enemy = Resources.Load<Enemy>("Prefab/Enemy");
     private static Projectile projectile = Resources.Load<Projectile>("Prefab/EnemyProjectile");
     private static Powerup powerup = Resources.Load<Powerup>("Prefab/Powerup");
+
+    private static RuntimeAnimatorController goblinAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Goblin/AnimGoblin");
+    private static RuntimeAnimatorController demonDogAnimation;
+    
     
     public static Enemy createGoblin(float strengthMod = 1)
     {
@@ -12,6 +16,10 @@ static class EntityFactory
         goblin.init(hp: 10 * strengthMod, atk: 5 * strengthMod, move: 4, freq: 5, atkRate: 5);
         goblin.points = (int)(10 * strengthMod);
         goblin.AddBehaviour(new MeleeMovement());
+      
+         Animator controller = enemy.gameObject.AddComponent<Animator>();
+         controller.runtimeAnimatorController =  goblinAnimation;
+
         return goblin;
     }
 

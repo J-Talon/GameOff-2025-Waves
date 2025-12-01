@@ -16,6 +16,13 @@ public class Enemy : GameEntity
         circleCollider = GetComponent<CircleCollider2D>();
     }
 
+
+    private void Start()
+    {
+        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+        rb.freezeRotation = true;
+    }
+
     public void AddBehaviour(IBehaviour behaviour)
     {
         behaviours.Add(behaviour);

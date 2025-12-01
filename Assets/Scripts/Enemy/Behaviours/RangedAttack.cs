@@ -1,3 +1,4 @@
+using Effect.Behaviour;
 using UnityEngine;
 
 public class RangedAttack : IBehaviour
@@ -14,6 +15,9 @@ public class RangedAttack : IBehaviour
     {
         this.enemy = null;
     }
+    
+    
+    
     public void tick(Vector3 playerPosition)
     {
         Vector3 direction = playerPosition - enemy.transform.position;
@@ -27,6 +31,10 @@ public class RangedAttack : IBehaviour
                 temp.targetPosition = playerPosition;
                 projectileManager.projectileList.Add(temp);
 
+
+                Animator anim = enemy.GetComponent<Animator>();
+                anim.SetTrigger(EntityAnimatorState.ATTACK.value);
+                
                 enemy.attackTimer = 0;
             }
         }
