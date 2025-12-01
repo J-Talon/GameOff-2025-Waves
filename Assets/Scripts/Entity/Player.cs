@@ -41,7 +41,7 @@ public class Player : MonoBehaviour, IManager, IDataUser
     }
     public void InitializeWeapons()
     {
-        for (int i = 0; i < data.weaponCount; i++)
+        for (int i = 0; i < data.weapons.Count; i++)
         {
             GameObject itemInstance = Instantiate(itemPulse);
             GameItem item = itemInstance.GetComponent<ItemPulse>();
@@ -67,21 +67,20 @@ public class Player : MonoBehaviour, IManager, IDataUser
     }
     public void FixedUpdate()
     {
-
-        //todo: Add dedicated handler for this
         Vector3 position = gameObject.transform.position;
         position.z = cam.transform.position.z;
         cam.transform.position = position;
 
-
         if (impulse.sqrMagnitude < 0.01f)
             impulse = Vector2.zero;
+
         if (data != null)
         {
             rigidBody.linearVelocity = (inputMovement * data.playerData.moveSpeed) + impulse;
             impulse *= (1 - data.playerData.frictionCoeff);
+            GainEnergy(1);
         }
-        //todo: consider concurrent modification exceptions
+
         if (SceneManager.GetActiveScene().name == "Temporary")
         {
             foreach (GameItem item in items)
@@ -90,7 +89,11 @@ public class Player : MonoBehaviour, IManager, IDataUser
             }
         }
 
-        GainEnergy(1);
+        // ----- BOUNDARY CLAMP -----
+        Vector3 pos = transform.position;
+        pos.x = Mathf.Clamp(pos.x, data.bottomLeft.x, data.topRight.x);
+        pos.y = Mathf.Clamp(pos.y, data.bottomLeft.y, data.topRight.y);
+        transform.position = pos;
     }
 
     //if you need to apply knockback to the player

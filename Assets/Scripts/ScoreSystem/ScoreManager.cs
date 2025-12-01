@@ -46,6 +46,7 @@ public class ScoreManager : MonoBehaviour, IManager, IDataUser
     }
     void OnDestroy()
     {
+        OnScoreChange -= UpdateScore;
         Main.Instance.RemoveManager(this);
     }
 }

@@ -25,9 +25,12 @@ public class HealthManager : MonoBehaviour, IManager, IDataUser
     }
     public void Update()
     {
-        survivalTime += Time.deltaTime;
-        gameData.timerValue = survivalTime;
-        OnTimerChange?.Invoke(playerData, survivalTime);
+        if (playerData != null & gameData != null)
+        {
+            survivalTime += Time.deltaTime;
+            gameData.timerValue = survivalTime;
+            OnTimerChange?.Invoke(playerData, survivalTime);
+        }
     }
     public void Register(IWorker worker)
     {
@@ -59,6 +62,7 @@ public class HealthManager : MonoBehaviour, IManager, IDataUser
     }
     void OnDestroy()
     {
+        OnHealthChange -= UpdateHealthData;
         if (Main.Instance != null)
             Main.Instance.RemoveManager(this);
     }

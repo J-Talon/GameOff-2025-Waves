@@ -23,6 +23,7 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+
         if (manager.data.timerValue < 2) // Give player a few seconds of peace
         {
             return;
@@ -32,7 +33,7 @@ public class EnemySpawner : MonoBehaviour
             spawnTimer += Time.deltaTime;
             if ((spawnTimer >= spawnInterval) && (manager.enemyList.Count <= mobCap))
             {
-                if (0 < manager.data.timerValue &&  manager.data.timerValue < 15)
+                if (0 < manager.data.timerValue && manager.data.timerValue < 15)
                 {
                     SpawnWaveOne();
                 }
@@ -44,7 +45,8 @@ public class EnemySpawner : MonoBehaviour
                 {
                     SpawnWaveThree();
                 }
-                if (manager.data.timerValue > 60) {
+                if (manager.data.timerValue > 60)
+                {
                     endlessTimer += Time.deltaTime;
                     if (endlessTimer > 30)
                     {
