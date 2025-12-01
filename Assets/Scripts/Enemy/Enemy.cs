@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class Enemy : GameEntity
 {
     private List<IBehaviour> behaviours = new List<IBehaviour>();
     private CircleCollider2D circleCollider;
+
+    public int points;
 
     public void Start()
     {
@@ -56,5 +60,43 @@ public class Enemy : GameEntity
     {
         yield return new WaitForSeconds(time);
         circleCollider.enabled = true;
+    }
+
+
+    public void takeDamage(float dmg, float atkFrequency)
+    {
+        Debug.Log("damage: " + dmg + "health: " + health);
+        health -= dmg;
+        if (health < 0)
+        {
+            if (SceneManager.GetActiveScene().name == "Temporary")
+            {
+                if (this.transform.position != null)
+                {
+                    int random = Random.Range(1, 10);
+                    if (random < 4)
+                    {
+                        Powerup powerup = new Powerup();
+                        if (random == 1)
+                        {
+                            powerup = EntityFactory.createHP();
+                        }
+                        else if (random == 2)
+                        {
+                            powerup = EntityFactory.createEnergy();
+                        }
+                        else if (random == 3)
+                        {
+                            powerup = EntityFactory.createHybrid();
+                        }
+                        powerup.transform.position = this.transform.position;
+                    }
+                }
+            }
+
+            //Player.Instance.GainEnergy(100);
+            ScoreManager.Instance.InvokeScoreEvent(points);
+            Destroy(gameObject);
+        }
     }
 }

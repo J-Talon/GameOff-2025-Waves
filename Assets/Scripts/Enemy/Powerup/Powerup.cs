@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class Powerup : GameEntity
 {
-    private List<IBehaviour> behaviours = new List<IBehaviour>();
+    private List<PowerupBehaviour> behaviours = new();
 
-    public void AddBehaviour(IBehaviour behaviour)
+    public void AddBehaviour(PowerupBehaviour behaviour)
     {
         behaviours.Add(behaviour);
         behaviour.Register(this);
         Debug.Log("behaviour added");
     }
 
-    public void RemoveBehaviour(IBehaviour behaviour)
+    public void RemoveBehaviour(PowerupBehaviour behaviour)
     {
         behaviour.DeRegister(this);
         behaviours.Remove(behaviour);
@@ -23,7 +23,7 @@ public class Powerup : GameEntity
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        SetLifeTime(attackRate);
+        SetLifeTime(15);
     }
 
     // Update is called once per frame
@@ -41,9 +41,9 @@ public class Powerup : GameEntity
             return;
         }
         // Process effects
-        foreach (IBehaviour behaviour in behaviours)
+        foreach (PowerupBehaviour behaviour in behaviours)
         {
-            behaviour.tick();
+            behaviour.tick(player);
         }
         Destroy(gameObject);
     }

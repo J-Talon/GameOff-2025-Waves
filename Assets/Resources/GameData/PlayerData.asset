@@ -16,6 +16,6 @@ MonoBehaviour:
   currentHealth: 200
   maxEnergy: 10000
   currentEnergy: 10000
-  moveSpeed: 10
+  moveSpeed: 5
   frictionCoeff: 0.02
   score: 0

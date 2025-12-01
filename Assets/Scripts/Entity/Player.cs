@@ -89,6 +89,8 @@ public class Player : MonoBehaviour, IManager, IDataUser
                 item.ItemTick();
             }
         }
+
+        GainEnergy(1);
     }
 
     //if you need to apply knockback to the player

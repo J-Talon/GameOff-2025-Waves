@@ -15,10 +15,10 @@ MonoBehaviour:
   attackPeriod: 100
   expansionSpeed: 500
   maxRange: 1
-  baseDamage: 500
+  baseDamage: 250
   currentDamage: 0
   damageMultiplier: 0
-  baseEnergyCost: 50
+  baseEnergyCost: 10
   currentEnergyCost: 0
   energyMultiplier: 0
   id: 0

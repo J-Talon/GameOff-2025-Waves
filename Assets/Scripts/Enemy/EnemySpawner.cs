@@ -5,11 +5,13 @@ public class EnemySpawner : MonoBehaviour
 {
     private float spawnTimer = 0;
     private float spawnInterval = 1f;
+    private float endlessTimer = 0;
 
     private Transform player;
     private EnemyManager manager;
 
     private int mobCap = 200;
+    private float difficultyMult = 1.5f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -38,9 +40,18 @@ public class EnemySpawner : MonoBehaviour
                 {
                     SpawnWaveTwo();
                 }
-                if (manager.data.timerValue < 45 && manager.data.timerValue < 60)
+                if (45 < manager.data.timerValue && manager.data.timerValue < 60)
                 {
                     SpawnWaveThree();
+                }
+                if (manager.data.timerValue > 60) {
+                    endlessTimer += Time.deltaTime;
+                    if (endlessTimer > 30)
+                    {
+                        endlessTimer = 0;
+                        difficultyMult *= 1.5f;
+                    }
+                    SpawnWaveEndless();
                 }
                 spawnTimer = 0;
             }
@@ -75,14 +86,18 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    private void SpawnWaveFour()
+    private void SpawnWaveEndless()
     {
-
-    }
-
-    private void SpawnWaveFive()
-    {
-
+        Enemy temp;
+        for (int i = 0; i < 2; i++)
+        {
+            temp = EntityFactory.createGoblin(2 * difficultyMult);
+            temp.transform.position = GetRandomPosition();
+            manager.enemyList.Add(temp);
+        }
+        temp = EntityFactory.createDog(0.5f);
+        temp.transform.position = GetRandomPosition();
+        manager.enemyList.Add(temp);
     }
 
     private Vector2 GetRandomPosition()
