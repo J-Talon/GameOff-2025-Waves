@@ -34,7 +34,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        Enemy temp = EntityFactory.createArcher();
+        Enemy temp = EntityFactory.createZombie();
         temp.transform.position = GetRandomPosition();
         manager.enemyList.Add(temp);
 

@@ -1,9 +1,16 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : GameEntity
 {
     private List<IBehaviour> behaviours = new List<IBehaviour>();
+    private CircleCollider2D circleCollider;
+
+    public void Start()
+    {
+        circleCollider = GetComponent<CircleCollider2D>();
+    }
 
     public void AddBehaviour(IBehaviour behaviour)
     {
@@ -20,11 +27,13 @@ public class Enemy : GameEntity
     }
     public void tick(Vector3 playerPosition)
     {
+        attackTimer += Time.deltaTime;
         foreach (IBehaviour behaviour in behaviours)
         {
             behaviour.tick(playerPosition);
         }
     }
+
     public void OnTriggerStay2D(Collider2D other)
     {
         GameObject hit = other.gameObject;
@@ -33,21 +42,19 @@ public class Enemy : GameEntity
         {
             return;
         }
-        attackTimer += Time.deltaTime;
-        if (attackTimer > attackRate) {
-            player.damage(attackDmg);
-            attackTimer = 0;
-        }
+        player.damage(attackDmg);
+        circleCollider.enabled = false;
+        SetInvincibility(0.1f);
     }
 
-    public void OnTriggerEnter2D(Collider2D other)
+    public void SetInvincibility(float time)
     {
-        GameObject hit = other.gameObject;
-        Player player = hit.GetComponent<Player>();
-        if (player == null)
-        {
-            return;
-        }
-        attackTimer = attackRate;
+        StartCoroutine(Expire(time));
+    }
+
+    IEnumerator Expire(float time)
+    {
+        yield return new WaitForSeconds(time);
+        circleCollider.enabled = true;
     }
 }
