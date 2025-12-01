@@ -19,4 +19,8 @@ public class HealthMarkerUpdater : MonoBehaviour, IWorker
         float normalized = data.currentHealth / data.maxHealth;
         rectTransform.localScale = new Vector3(normalized, 1f, 1f);
     }
+    public void OnDestroy()
+    {
+        HealthManager.OnHealthChange -= UpdateBar;
+    }
 }

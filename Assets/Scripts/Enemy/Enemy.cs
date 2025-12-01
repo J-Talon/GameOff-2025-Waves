@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Effect.Behaviour;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
 
 public class Enemy : GameEntity
 {
@@ -18,7 +17,11 @@ public class Enemy : GameEntity
     {
         circleCollider = GetComponent<CircleCollider2D>();
         Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+<<<<<<< HEAD
         anim = GetComponent<Animator>();
+=======
+        circleCollider = GetComponent<CircleCollider2D>();
+>>>>>>> development
         rb.freezeRotation = true;
         
     }

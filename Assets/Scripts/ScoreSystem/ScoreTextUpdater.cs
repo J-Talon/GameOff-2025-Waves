@@ -20,4 +20,8 @@ public class ScoreTextUpdater : MonoBehaviour, IWorker
     {
         scoreText.text = $"Score: {data.score}";
     }
+    public void OnDestroy()
+    {
+        ScoreManager.Instance.OnScoreChange -= UpdateBar;
+    }
 }

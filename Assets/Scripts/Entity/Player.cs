@@ -59,7 +59,7 @@ public class Player : MonoBehaviour, IManager, IDataUser
     }
     public void InitializeWeapons()
     {
-        for (int i = 0; i < data.weaponCount; i++)
+        for (int i = 0; i < data.weapons.Count; i++)
         {
             GameObject itemInstance = Instantiate(itemPulse);
             GameItem item = itemInstance.GetComponent<ItemPulse>();
@@ -91,24 +91,26 @@ public class Player : MonoBehaviour, IManager, IDataUser
     }
     public void FixedUpdate()
     {
-
-        //todo: Add dedicated handler for this
         Vector3 position = gameObject.transform.position;
         position.z = cam.transform.position.z;
         cam.transform.position = position;
 
-
         if (impulse.sqrMagnitude < 0.01f)
             impulse = Vector2.zero;
 
+<<<<<<< HEAD
 
         Vector2 linVel = Vector2.zero;
+=======
+>>>>>>> development
         if (data != null)
         {
             linVel = (inputMovement * data.playerData.moveSpeed) + impulse;
             rigidBody.linearVelocity = linVel;
             impulse *= (1 - data.playerData.frictionCoeff);
+            GainEnergy(1);
         }
+<<<<<<< HEAD
         
 
         float coarseMoveMagSqd = (inputMovement.x * inputMovement.x) + (inputMovement.y * inputMovement.y);
@@ -125,6 +127,9 @@ public class Player : MonoBehaviour, IManager, IDataUser
         
         
         //todo: consider concurrent modification exceptions
+=======
+
+>>>>>>> development
         if (SceneManager.GetActiveScene().name == "Temporary")
         {
             foreach (GameItem item in items)
@@ -133,6 +138,7 @@ public class Player : MonoBehaviour, IManager, IDataUser
             }
         }
 
+<<<<<<< HEAD
         GainEnergy(1);
         
         //idle animations technically aren't in here yet 
@@ -171,6 +177,13 @@ public class Player : MonoBehaviour, IManager, IDataUser
         transform.localScale = scale;
 
 
+=======
+        // ----- BOUNDARY CLAMP -----
+        Vector3 pos = transform.position;
+        pos.x = Mathf.Clamp(pos.x, data.bottomLeft.x, data.topRight.x);
+        pos.y = Mathf.Clamp(pos.y, data.bottomLeft.y, data.topRight.y);
+        transform.position = pos;
+>>>>>>> development
     }
 
     //if you need to apply knockback to the player

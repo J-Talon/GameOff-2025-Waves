@@ -21,7 +21,7 @@ public class Main : MonoBehaviour
     public static Main Instance;
     // public Player player;
 
-    [SerializeField] private GameData gameData;
+    [SerializeField] public GameData gameData;
     [SerializeField] private SceneHelper persistent;
     [SerializeField] private SceneHelper mainmenu;
     [SerializeField] private SceneHelper gameplay;
@@ -34,7 +34,7 @@ public class Main : MonoBehaviour
         if (Instance == null) Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-    private void Start()
+    private IEnumerator Start()
     {
         persistent = new SceneHelper(persistentScenes);
         mainmenu = new SceneHelper(mainmenuScenes);
@@ -42,12 +42,14 @@ public class Main : MonoBehaviour
         gameover = new SceneHelper(gameoverScenes);
         current = new SceneHelper();
         previous = new SceneHelper();
-        StartCoroutine(persistent.LoadScenes());
-        StartCoroutine(LoadMainMenu());
+        yield return StartCoroutine(persistent.LoadScenes());
+        yield return StartCoroutine(LoadMainMenu());
     }
 
     public IEnumerator LoadMainMenu()
     {
+        yield return null;
+        yield return null;
         yield return StartCoroutine(mainmenu.LoadScenes());
         yield return null;
         previous.SetScenes(current.GetScenes());
@@ -56,23 +58,22 @@ public class Main : MonoBehaviour
     }
     public IEnumerator LoadGameplay()
     {
-        yield return null;
-        yield return null;
-        yield return null;
         yield return StartCoroutine(gameplay.LoadScenes());
         yield return null;
         yield return StartCoroutine(gameData.InitializeNewData());
         yield return null;
-        yield return null;
-        yield return null;
-        yield return null;
         ProvideDataToManagers();
+        yield return null;
+
         previous.SetScenes(current.GetScenes());
         current.SetScenes(gameplayScenes);
         if (previous.GetSceneCount() > 0) yield return StartCoroutine(previous.UnloadScenes());
     }
     public IEnumerator LoadGameover()
     {
+        yield return null;
+        yield return null;
+
         yield return StartCoroutine(gameover.LoadScenes());
         yield return null;
         previous.SetScenes(current.GetScenes());
@@ -90,10 +91,6 @@ public class Main : MonoBehaviour
         managers.Remove(manager);
         managerCount--;
         Debug.Log($"Removed {manager}...");
-    }
-    void ProvideDataToManager(IDataUser user)
-    {
-        user.SetData(gameData);
     }
     public void ProvideDataToManagers()
     {

@@ -3,11 +3,19 @@ using UnityEngine;
 
 public class MeleeMovement : IBehaviour
 {
+<<<<<<< HEAD
     
     private int facingDir = -1;
     private Animator animator;
+=======
+    //private Enemy enemy;
+    private int facingDir = -1;
+    private Animator animator;
+
+
+>>>>>>> development
     private GameEntity enemy;
-    
+
     public void Register(GameEntity enemy)
     {
         this.enemy = enemy;
@@ -16,12 +24,12 @@ public class MeleeMovement : IBehaviour
 
     }
 
-    public void DeRegister(GameEntity enemy) 
+    public void DeRegister(GameEntity enemy)
     {
         this.enemy = null;
         animator = null;
     }
-    
+
     public void tick(Vector3 playerPosition)
     {
         Vector3 direction = playerPosition - enemy.transform.position;
@@ -50,7 +58,7 @@ public class MeleeMovement : IBehaviour
             animator.SetBool(value, true);
         else
             animator.SetBool(value, false);
-  
+
 
 
         if (direction.magnitude > 0.5)

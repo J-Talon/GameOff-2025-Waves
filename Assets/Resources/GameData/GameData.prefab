@@ -44,6 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06574c6103eaf5a4ba1ba6ad50b2e45f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bottomLeft: {x: -50, y: -50}
+  topRight: {x: 50, y: 50}
+  timerValue: 0
   playerData: {fileID: 0}
   weaponCount: 5
   weapons:

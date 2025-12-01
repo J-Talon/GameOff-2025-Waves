@@ -9,16 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 06fec9aae2bd2fb4d84f2c7aff6f9d1c, type: 3}
   m_Name: Weapon_5
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  attackPeriod: 5000
-  expansionSpeed: 1000
-  maxRange: 15
-  baseDamage: 1000
+  attackPeriod: 10000
+  expansionSpeed: 5000
+  maxRange: 40
+  baseDamage: 20
   currentDamage: 0
   damageMultiplier: 0
-  baseEnergyCost: 750
+  baseEnergyCost: 400
   currentEnergyCost: 0
   energyMultiplier: 0
-  id: 0
+  id: 4
