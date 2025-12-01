@@ -87,7 +87,7 @@ namespace Item
         public void OnTriggerEnter2D(Collider2D other)
         {
             GameObject hit = other.gameObject;
-            GameEntity entity = hit.GetComponent<GameEntity>();
+            Enemy entity = hit.GetComponent<Enemy>();
             if (entity == null)
                 return;
 
