@@ -7,6 +7,7 @@ using UnityEngine;
 [Serializable]
 public class GameData : MonoBehaviour
 {
+    [SerializeField] public float timerValue;
     [SerializeField] public PlayerData playerData;
     [SerializeField] public int weaponCount = 5;
     [SerializeField] public List<WeaponData> weapons = new List<WeaponData>();
@@ -27,6 +28,7 @@ public class GameData : MonoBehaviour
     }
     public IEnumerator InitializeNewData()
     {
+        timerValue = 0;
         var originalPlayerData = Resources.Load<PlayerData>("GameData/PlayerData");
         playerData = ScriptableObject.Instantiate(originalPlayerData);
         yield return null;

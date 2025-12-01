@@ -51,8 +51,8 @@ MonoBehaviour:
   yOrigin: 4
   xSize: 480
   ySize: 1
-  xScale: 0.1
-  yScale: 1
+  xScale: 0.09
+  yScale: 0.7
   vertices: []
   triangles: 
   uv: []

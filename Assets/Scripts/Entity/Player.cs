@@ -115,8 +115,9 @@ public class Player : MonoBehaviour, IManager, IDataUser
         float next = this.data.playerData.currentHealth - damage;
         if (next <= 0)
         {
-            die();
-            Main.Instance.LoadGameover();
+            StartCoroutine(Main.Instance.LoadGameover());
+            // die();
+
         }
 
         this.data.playerData.currentHealth = next;
